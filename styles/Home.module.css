@@ -1,0 +1,28 @@
+.container {
+  padding: 5rem;
+  font-size: 1.5rem;
+}
+
+.form {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.form input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #000;
+  border-radius: 0.25rem;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.form button {
+  padding: 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  background-color: rgba(255, 247, 145);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
