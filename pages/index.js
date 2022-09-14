@@ -11,15 +11,26 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("/api/predictions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: e.target.prompt.value,
-      }),
-    });
+    const response = await fetch(
+      "https://api.replicate.com/v1/predictions?web",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${process.env.REPLICATE_API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Pinned to a specific version of kuprel/min-dalle, fetched from:
+          // https://replicate.com/kuprel/min-dalle/versions
+          version:
+            "2af375da21c5b824a84e1c459f45b69a117ec8649c2aa974112d7cf1840fc0ce",
+          input: {
+            text: e.target.prompt.value,
+            grid_size: 1,
+          },
+        }),
+      }
+    );
     let prediction = await response.json();
     if (response.status !== 201) {
       setError(prediction.detail);
@@ -32,7 +43,14 @@ export default function Home() {
       prediction.status !== "failed"
     ) {
       await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id);
+      const response = await fetch(
+        "https://api.replicate.com/v1/predictions/" + prediction.id + "?web",
+        {
+          headers: {
+            Authorization: `Token ${process.env.REPLICATE_API_TOKEN}`,
+          },
+        }
+      );
       prediction = await response.json();
       if (response.status !== 200) {
         setError(prediction.detail);
