@@ -1,6 +1,8 @@
 .container {
-  padding: 5rem;
-  font-size: 1.5rem;
+  padding: 2rem;
+  font-size: 1.3rem;
+  max-width: 48rem;
+  margin: 0 auto;
 }
 
 .form {
@@ -13,7 +15,7 @@
   padding: 1rem;
   border: 1px solid #000;
   border-radius: 0.25rem;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-right: 1rem;
 }
 
@@ -22,7 +24,12 @@
   border: none;
   border-radius: 0.25rem;
   box-sizing: border-box;
-  background-color: rgba(255, 247, 145);
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
 }

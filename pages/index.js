@@ -38,6 +38,7 @@ export default function Home() {
         setError(prediction.detail);
         return;
       }
+      console.log({ prediction });
       setPrediction(prediction);
     }
   };
@@ -45,16 +46,24 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Getting started with Replicate + Next.js</title>
+        <title>Replicate + Next.js</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
       <p>
         Dream something with{" "}
-        <a href="https://replicate.com/kuprel/min-dalle">kuprel/min-dalle</a>:
+        <a href="https://replicate.com/stability-ai/stable-diffusion">
+          stability-ai/stable-diffusion
+        </a>
+        :
       </p>
 
       <form className={styles.form} onSubmit={handleSubmit}>
-        <input type="text" name="prompt" />
+        <input
+          type="text"
+          name="prompt"
+          placeholder="Enter a prompt to display an image"
+        />
         <button type="submit">Go!</button>
       </form>
 
@@ -62,15 +71,17 @@ export default function Home() {
 
       {prediction && (
         <div>
-          <p>{prediction.status}</p>
           {prediction.output && (
-            <Image
-              src={prediction.output[prediction.output.length - 1]}
-              alt="output"
-              width={500}
-              height={500}
-            />
+            <div className={styles.imageWrapper}>
+              <Image
+                fill
+                src={prediction.output[prediction.output.length - 1]}
+                alt="output"
+                sizes="100vw"
+              />
+            </div>
           )}
+          <p>status: {prediction.status}</p>
         </div>
       )}
     </div>
