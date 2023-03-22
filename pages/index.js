@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -44,34 +43,36 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="container max-w-2xl mx-auto p-5">
       <Head>
         <title>Replicate + Next.js</title>
       </Head>
 
-      <p>
+      <h1 className="py-6 text-center font-bold text-2xl">
         Dream something with{" "}
         <a href="https://replicate.com/stability-ai/stable-diffusion">
-          stability-ai/stable-diffusion
+          Stable Diffusion
         </a>
-        :
-      </p>
+      </h1>
 
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className="w-full flex" onSubmit={handleSubmit}>
         <input
           type="text"
+          className="flex-grow"
           name="prompt"
           placeholder="Enter a prompt to display an image"
         />
-        <button type="submit">Go!</button>
+        <button className="button" type="submit">
+          Go!
+        </button>
       </form>
 
       {error && <div>{error}</div>}
 
       {prediction && (
-        <div>
+        <>
           {prediction.output && (
-            <div className={styles.imageWrapper}>
+            <div className="image-wrapper mt-5">
               <Image
                 fill
                 src={prediction.output[prediction.output.length - 1]}
@@ -80,8 +81,8 @@ export default function Home() {
               />
             </div>
           )}
-          <p>status: {prediction.status}</p>
-        </div>
+          <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
+        </>
       )}
     </div>
   );
