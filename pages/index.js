@@ -50,8 +50,8 @@ export default function Home() {
 
       <h1 className="py-6 text-center font-bold text-2xl">
         Dream something with{" "}
-        <a href="https://replicate.com/stability-ai/stable-diffusion">
-          Stable Diffusion
+        <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started">
+          SDXL
         </a>
       </h1>
 
