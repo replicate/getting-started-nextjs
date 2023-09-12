@@ -122,10 +122,10 @@
   dependencies:
     glob "7.1.7"
 
-"@next/font@13.4.6":
-  version "13.4.6"
-  resolved "https://registry.npmjs.org/@next/font/-/font-13.4.6.tgz"
-  integrity sha512-Pjm6B6f4KWr4kWe7yu2trLtwQPco/wLSOzWeD7bW17Sd209ibrhRwbSggvlAt1FJu8K4ag2xtVg8WfRFbON1mw==
+"@next/font@13.4.19":
+  version "13.4.19"
+  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.4.19.tgz#2b69aee760a3bbabf54873f80ae6d4b09b35d133"
+  integrity sha512-yOuSRYfqksWcaG/sATr1/DEGvvI8gnmAAnQCCZ0+L9p4Pio3/DMu71J56YHh9Hz84LDN4tMVzuux0ssCuM50sA==
 
 "@next/swc-darwin-arm64@13.4.19":
   version "13.4.19"
