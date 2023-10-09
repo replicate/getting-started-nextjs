@@ -1801,10 +1801,10 @@ regexp.prototype.flags@^1.4.3:
     define-properties "^1.1.3"
     functions-have-names "^1.2.2"
 
-replicate@^0.12.3:
-  version "0.12.3"
-  resolved "https://registry.npmjs.org/replicate/-/replicate-0.12.3.tgz"
-  integrity sha512-HVWKPoVhWVTONlWk+lUXmq9Vy2J8MxBJMtDBQq3dA5uq71ZzKTh0xvJfvzW4+VLBjhBeL7tkdua6hZJmKfzAPQ==
+replicate@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/replicate/-/replicate-0.20.0.tgz#2d62519be263e0d670ff186158a4c3b9db868295"
+  integrity sha512-HSIdj0IHhpegy8s3yDMMYCNLPLZqWzScxnFEyxUQcWgbHn3ycEG5Z8uCwt1Bkp6mTOyEmVv2Ot0WRoXzHFuJ6A==
 
 resolve-from@^4.0.0:
   version "4.0.0"
