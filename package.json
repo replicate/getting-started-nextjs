@@ -18,7 +18,7 @@
     "replicate": "^0.21.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.14",
+    "autoprefixer": "^10.4.16",
     "postcss": "^8.4.29",
     "tailwindcss": "^3.3.2"
   }
