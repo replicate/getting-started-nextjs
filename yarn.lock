@@ -1728,9 +1728,9 @@ regexp.prototype.flags@^1.5.0, regexp.prototype.flags@^1.5.1:
     define-properties "^1.2.0"
     set-function-name "^2.0.0"
 
-replicate@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/replicate/-/replicate-0.22.0.tgz#d882975158ada1eab6d6191e439c86308a164ca6"
+replicate@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/replicate/-/replicate-0.25.0.tgz#e072cbf157f6e44de0e835d67df2ef1a63eb6750"
 
 resolve-from@^4.0.0:
   version "4.0.0"
