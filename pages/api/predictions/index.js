@@ -4,6 +4,12 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 });
 
+// In production and preview deployments (on Vercel), the VERCEL_URL environment variable is set.
+// In development (on your local machine), the NGROK_HOST environment variable is set.
+const WEBHOOK_HOST = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : process.env.NGROK_HOST;
+
 export default async function handler(req, res) {
   if (!process.env.REPLICATE_API_TOKEN) {
     throw new Error(
@@ -18,6 +24,13 @@ export default async function handler(req, res) {
 
     // This is the text prompt that will be submitted by a form on the frontend
     input: { prompt: req.body.prompt },
+
+    // The webhook is the endpoint that will receive the webhook events from Replicate
+    webhook: `${WEBHOOK_HOST}/api/replicate-webhook`,
+
+    // The webhook_events_filter is an array of events that the webhook will receive
+    // See https://replicate.com/docs/reference/http#predictions.create--webhook_events_filter
+    webhook_events_filter: ["start", "completed"],
   });
 
   if (prediction?.error) {
