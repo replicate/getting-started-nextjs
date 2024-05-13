@@ -2,25 +2,30 @@
 // Identical webhooks can be sent multiple times, so this handler must be idempotent.
 
 import { NextResponse } from 'next/server';
-import Replicate, { validateWebhook } from 'replicate';
-
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
+import { validateWebhook } from 'replicate';
 
 export async function POST(request) {
-  console.log("Received webhook for prediction: ", req.body.id);
-
+  console.log("Received webhook...");
+  
   const secret = process.env.REPLICATE_WEBHOOK_SIGNING_SECRET;
-  const webhookIsValid = await validateWebhook(request, secret);
+
+  if (!secret) {
+    console.log("Skipping webhook validation. To validate webhooks, set REPLICATE_WEBHOOK_SIGNING_SECRET")
+    const body = await request.json();
+    console.log(body);
+    return NextResponse.json({ detail: "Webhook received (but not validated)" }, { status: 200 });
+  }
+  
+  const webhookIsValid = await validateWebhook(request.clone(), secret);
 
   if (!webhookIsValid) {
     return NextResponse.json({ detail: "Webhook is invalid" }, { status: 401 });
   }
 
+  // process validate webhook here...
   console.log("Webhook is valid!");
-  
-  // process webhook here...
+  const body = await request.json();
+  console.log(body);
 
   return NextResponse.json({ detail: "Webhook is valid" }, { status: 200 });
 }
