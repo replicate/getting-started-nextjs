@@ -57,7 +57,9 @@ This app is set up to optionally request, receive, and validate webhooks.
 1. You specify a webhook URL when creating a prediction in [app/api/predictions/[id]/route.js](app/api/predictions/[id]/route.js)
 1. Replicate sends POST requests to the handler in [app/api/webhooks/route.js](app/api/webhooks/route.js) as the prediction is updated.
 
-### How to (optionally) request and receive webhooks
+### Requesting and receiving webhooks
+
+To test webhooks in development, you'll need to create a secure tunnel to your local machine, so Replicate can send POST requests to it. Follow these steps:
 
 1. [Download and set up `ngrok`](https://replicate.com/docs/webhooks#testing-your-webhook-code), an open-source tool that creates a secure tunnel to your local machine so you can receive webhooks.
 1. Run ngrok to create a publicly accessible URL to your local machine: `ngrok http 3000`
@@ -67,7 +69,9 @@ This app is set up to optionally request, receive, and validate webhooks.
 1. Open [localhost:3000](http://localhost:3000) in your browser and enter a prompt to generate an image.
 1. Go to [replicate.com/webhooks](https://replicate.com/webhooks) to see your prediction status.
 
-### How to (optionally) validate incoming webhooks
+### Validating incoming webhooks
+
+Follow these steps to set up your development environment to validate incoming webhooks:
 
 1. Get your signing secret by running:
     ```
