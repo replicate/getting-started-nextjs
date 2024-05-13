@@ -11,7 +11,6 @@ const WEBHOOK_HOST = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : process.env.NGROK_HOST;
 
-
 export async function POST(request) {
   if (!process.env.REPLICATE_API_TOKEN) {
     throw new Error(
@@ -21,17 +20,17 @@ export async function POST(request) {
 
   const { prompt } = await request.json();
 
-  const prediction = await replicate.predictions.create({
+  const options = {
     version: '8beff3369e81422112d93b89ca01426147de542cd4684c244b673b105188fe5f',
-    input: { prompt },
+    input: { prompt }
+  }
 
-    // The webhook is the endpoint that will receive the webhook events from Replicate
-    webhook: `${WEBHOOK_HOST}/api/webhooks`,
+  if (WEBHOOK_HOST) {
+    options.webhook = `${WEBHOOK_HOST}/api/webhooks`
+    options.webhook_events_filter = ["start", "completed"]
+  }
 
-    // The webhook_events_filter is an array of events that the webhook will receive
-    // See https://replicate.com/docs/reference/http#predictions.create--webhook_events_filter
-    webhook_events_filter: ["start", "completed"],
-  });
+  const prediction = await replicate.predictions.create(options);
 
   if (prediction?.error) {
     return NextResponse.json({ detail: prediction.error }, { status: 500 });
