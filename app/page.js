@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -8,6 +8,11 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export default function Home() {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
+  const promptInputRef = useRef(null);
+
+  useEffect(() => {
+    promptInputRef.current.focus();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +37,7 @@ export default function Home() {
       prediction.status !== "failed"
     ) {
       await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id);
+      const response = await fetch(`/api/predictions/${prediction.id}`);
       prediction = await response.json();
       if (response.status !== 200) {
         setError(prediction.detail);
@@ -58,6 +63,7 @@ export default function Home() {
           className="flex-grow"
           name="prompt"
           placeholder="Enter a prompt to display an image"
+          ref={promptInputRef}
         />
         <button className="button" type="submit">
           Go!
