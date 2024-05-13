@@ -18,6 +18,8 @@ export async function POST(request) {
     return NextResponse.json({ detail: "Webhook is invalid" }, { status: 401 });
   }
 
+  console.log("Webhook is valid!");
+  
   // process webhook here...
 
   return NextResponse.json({ detail: "Webhook is valid" }, { status: 200 });
