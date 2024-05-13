@@ -1,9 +1,10 @@
+'use client';
+
 import { useState } from "react";
-import Head from "next/head";
 import Image from "next/image";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
+ 
 export default function Home() {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
@@ -44,10 +45,6 @@ export default function Home() {
 
   return (
     <div className="container max-w-2xl mx-auto p-5">
-      <Head>
-        <title>Replicate + Next.js</title>
-      </Head>
-
       <h1 className="py-6 text-center font-bold text-2xl">
         Dream something with{" "}
         <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started">
