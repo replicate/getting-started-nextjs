@@ -2,13 +2,15 @@
 
 This is a [Next.js](https://nextjs.org/) template project that's preconfigured to work with Replicate's API.
 
+It uses Next's newer [App Router](https://nextjs.org/docs/app) and [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components).
+
 You can use this as a quick jumping-off point to build a web app using Replicate's API, or you can recreate this codebase from scratch by following the guide at [replicate.com/docs/get-started/nextjs](https://replicate.com/docs/get-started/nextjs)
 
 ## Noteworthy files
 
-- [pages/index.js](pages/index.js) - The React frontend that renders the home page in the browser
-- [pages/api/predictions/index.js](pages/api/predictions/index.js) - The backend API endpoint that calls Replicate's API to create a prediction
-- [pages/api/predictions/[id].js](pages/api/predictions/[id].js) - The backend API endpoint that calls Replicate's API to get the prediction result
+- [app/page.js](app/page.js) - The React frontend that renders the home page in the browser
+- [app/api/predictions/routes.js](app/api/predictions/routes.js) - The backend API endpoint that calls Replicate's API to create a prediction
+- [app/api/predictions/[id]/routes.js](pages/api/predictions/[id]/routes.js) - The backend API endpoint that calls Replicate's API to get the prediction result
 
 ## Usage
 
