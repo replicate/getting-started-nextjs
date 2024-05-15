@@ -10,10 +10,10 @@ You can use this as a quick jumping-off point to build a web app using Replicate
 
 ## Noteworthy files
 
-- [app/page.js](app/page.js) - The React frontend that renders the home page in the browser
-- [app/api/predictions/route.js](app/api/predictions/route.js) - The backend API endpoint that calls Replicate's API to create a prediction
-- [app/api/predictions/[id]/route.js](pages/api/predictions/[id]/route.js) - The backend API endpoint that calls Replicate's API to get the prediction result
-- [app/api/webhooks/route.js](pages/api/predictions/[id]/route.js) - The backend API endpoint that calls Replicate's API to get the prediction result
+- [app/page.js](app/page.js) - React frontend that renders the home page in the browser
+- [app/api/predictions/route.js](app/api/predictions/route.js) - API endpoint that calls Replicate's API to create a prediction
+- [app/api/predictions/[id]/route.js](app/api/predictions/[id]/route.js) - API endpoint that calls Replicate's API to get the prediction result
+- [app/api/webhooks/route.js](app/api/webhooks/route.js) - API endpoint that receives and validates webhooks from Replicate
 
 ## Running the app
 
