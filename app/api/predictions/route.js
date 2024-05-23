@@ -5,6 +5,12 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 });
 
+// Prevent Next.js / Vercel from caching responses
+// See https://github.com/replicate/replicate-javascript/issues/136#issuecomment-1728053102
+replicate.fetch = (url, options) => {
+  return fetch(url, { ...options, cache: "no-store" });
+};
+
 // In production and preview deployments (on Vercel), the VERCEL_URL environment variable is set.
 // In development (on your local machine), the NGROK_HOST environment variable is set.
 const WEBHOOK_HOST = process.env.VERCEL_URL
