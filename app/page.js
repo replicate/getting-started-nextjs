@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
- 
+
 export default function Home() {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
@@ -51,10 +51,7 @@ export default function Home() {
   return (
     <div className="container max-w-2xl mx-auto p-5">
       <h1 className="py-6 text-center font-bold text-2xl">
-        Dream something with{" "}
-        <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started">
-          SDXL
-        </a>
+        Think creative and type your prompt
       </h1>
 
       <form className="w-full flex" onSubmit={handleSubmit}>
