@@ -8,7 +8,7 @@ const replicate = new Replicate({
 // Prevent Next.js / Vercel from caching responses
 // See https://github.com/replicate/replicate-javascript/issues/136#issuecomment-1728053102
 replicate.fetch = (url, options) => {
-  return fetch(url, { ...options, cache: "no-store" });
+  return fetch(url, { cache: "no-store", ...options });
 };
 
 export async function GET(request, {params}) {
