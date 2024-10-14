@@ -2,10 +2,6 @@
 {  
   "$schema": "https://ui.shadcn.com/schema.json",
   "style": "new-york",
-  "baseUrl": ".",
-  "paths": {
-    "@/*": ["src/*", "@/*"]
-  },
   "aliases": {  
     "components": "@/components",
     "utils": "@/lib/utils",
