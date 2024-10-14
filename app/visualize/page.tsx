@@ -54,7 +54,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-      <Header />
       <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
