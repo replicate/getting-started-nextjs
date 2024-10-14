@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { Card } from "@/components/ui/card"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -70,7 +71,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-md w-full space-y-8">
+      <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
           <div className="text-center">
             <h1 className="text-3xl font-bold">Contact Us</h1>
             <p className="mt-2 text-gray-400">We&apos;d love to hear from you!</p>
@@ -140,11 +141,8 @@ export default function ContactPage() {
               </form>
             </Form>
           </div>
-        </div>
+        </Card>
       </main>
-      <footer className="py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
-        © {new Date().getFullYear()} Safe-AI UI. All rights reserved.
-      </footer>
       <Toaster />
     </div>
   )

@@ -86,14 +86,11 @@ export default function Visualize() {
   };
 
   return (
-    <div className="container max-w-2xl mx-auto p-5">
-      <Card>
+      <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
+           <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
         <CardHeader>
           <CardTitle className="text-center">
-            Imagine with AI{" "}
-            <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started" className="text-blue-500 hover:underline">
-              SDXL
-            </a>
+            Imagine with AI
           </CardTitle>
         </CardHeader>
         <CardContent>

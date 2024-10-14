@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 
 export default function Page() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="w-full max-w-4xl mx-auto">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
+      <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center">Understanding and Implementing AI Safely</CardTitle>
           <CardDescription className="text-center">

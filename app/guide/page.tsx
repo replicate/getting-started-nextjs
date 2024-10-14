@@ -97,7 +97,7 @@ export default function Component() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
-      <Card className="w-full max-w-md bg-gray-800 border-gray-700 mb-4">
+           <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
         <CardHeader className={poppins.className}>
           <div className="flex items-center gap-2">
             <Brain className="h-6 w-6 text-[#09fff0]" />
