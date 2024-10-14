@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    // Enable JSX syntax
+    "jsx": "react", // or "preserve", depending on your use case
+
+    // Allow JavaScript files to be compiled
+    "allowJs": true,
+
+    // Other options...
+  },
+
+  // Include .tsx and .js files
+  "include": ["src/**/*.tsx", "src/**/*.js"]
+}
