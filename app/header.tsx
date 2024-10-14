@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet"
 
 const menuItems = [
   { value: "build-ai", label: "Build AI", href: "/build-ai" },
