@@ -48,7 +48,7 @@ export default function Header() {
               {menuItems.map((item) => (
                 <TabsTrigger
                   key={item.value}
-                  value={item.value}
+                  value={item.value || ''}
                   className="data-[state=active]:primary-button"
                 >
                   {item.label}
