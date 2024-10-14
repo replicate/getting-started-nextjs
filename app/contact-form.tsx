@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Toast, Toaster } from "@/components/ui/toast"
+import { Toast } from "@/components/ui/toast"
+import { Toaster } from "@/components/ui/toaster"
 
 const formSchema = z.object({
   name: z.string().min(2, {
