@@ -7,7 +7,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Download, Mail, Loader2 } from "lucide-react";
+import { useUserContent } from '../contexts/UserContentContext'
 import { toast } from "@/hooks/use-toast";
+
 
 interface Prediction {
   id: string;
@@ -151,11 +153,36 @@ function VisualizeContent() {
 }
 
 export default function Visualize() {
+  const { content, setContent, removeContent } = useUserContent()
+  const [inputKey, setInputKey] = useState('')
+  const [inputValue, setInputValue] = useState('')
+
+  const handleSave = () => {
+    if (inputKey && inputValue) {
+      setContent(inputKey, inputValue)
+      setInputKey('')
+      setInputValue('')
+    }
+  }
+
+  const handleRemove = (key: string) => {
+    removeContent(key)
+  }
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
       <Suspense fallback={<div className="text-white">Loading...</div>}>
         <VisualizeContent />
       </Suspense>
+      <Button onClick={handleSave}>Save</Button>
+      <div className="space-y-2">
+            {Object.entries(content).map(([key, value]) => (
+              <div key={key} className="flex justify-between items-center p-2 bg-secondary rounded">
+                <span>{key}: {value}</span>
+                <Button variant="destructive" size="sm" onClick={() => handleRemove(key)}>Remove</Button>
+              </div>
+            ))}
+          </div>
     </div>
   );
 }
