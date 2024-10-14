@@ -53,15 +53,17 @@ export async function POST(req) {
 
   // Ask Replicate for a streaming chat completion using meta/meta-llama-3-8b-instruct model
   const response = await replicate.predictions.create({
-    version: "8ca98e4faeb9f3e32b7c234a9bbf8a5a0e7f0f18e3fd8b8193916e4c8731efc7",
+    version: "b63acc3f54e3c08cb3b081f049ebc881420035dfc6db48f554530e9c4bc02ba3",
     input: {
       prompt: userMessage,
-      max_new_tokens: 500,
-      temperature: 0.75,
-      top_p: 0.9,
-      repetition_penalty: 1,
-      seed: 42,
-      system_prompt: "You are a helpful AI assistant.",
+      system_prompt: "You are a helpful AI assistant",
+      max_new_tokens: 512,
+      temperature: 0.7,
+      top_p: 0.95,
+      presence_penalty: 0,
+      frequency_penalty: 0,
+      prompt_template: "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+      stop_sequences: ["<|end_of_text|>", "<|eot_id|>"],
     },
     stream: true,
   });
