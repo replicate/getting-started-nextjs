@@ -25,14 +25,14 @@ export default function Component() {
       description: "Craft powerful prompts for image generation.",
       instructions: "Use our prompt builder to create detailed and effective prompts.",
       icon: <PenTool className="w-6 h-6" />,
-      href: "/build-prompt",
+      href: "/build",
     },
     {
       title: "AI Safety and Guidance",
       description: "Understand our AI safety measures and ethical guidelines.",
       instructions: "Learn about how we ensure safe and responsible AI image generation.",
       icon: <Shield className="w-6 h-6" />,
-      href: "/safety",
+      href: "/learn",
     },
     {
       title: "Contact",
@@ -46,7 +46,7 @@ export default function Component() {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">Safe-AI UI Pages</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">TheTechMargin Safe-AI</h1><em> Explore, be curious, expand your thinking.</em>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pages.map((page, index) => (
             <Card key={index} className="flex flex-col bg-gray-800 border-gray-700">
