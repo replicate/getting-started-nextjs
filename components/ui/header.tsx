@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const menuItems = [
-  { value: "build-ai", label: "Build AI", href: "../../app/build-ai" },
+  { value: "build-ai", label: "Build AI", href: "@components/ui/build-ai" },
   { value: "visualize-ai", label: "Visualize AI", href: "../app/visualize-ai" },
-  { value: "contact-form", label: "Contact", href: "../app/contact-form" },
+  { value: "contact-form", label: "Contact", href: "@/contact-form" },
 ]
 
 export default function Header() {
