@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Image, HelpCircle, PenTool, Shield, MessageCircle } from "lucide-react"
@@ -9,30 +10,35 @@ export default function Component() {
       description: "Generate images based on your prompts.",
       instructions: "Enter a detailed description of the image you want to create.",
       icon: <Image className="w-6 h-6" />,
+      href: "/visualize",
     },
     {
       title: "Guide Me",
       description: "Learn how to use Safe-AI UI effectively.",
       instructions: "Follow our step-by-step guide to get the most out of our platform.",
       icon: <HelpCircle className="w-6 h-6" />,
+      href: "/guide",
     },
     {
       title: "Build a Prompt",
       description: "Craft powerful prompts for image generation.",
       instructions: "Use our prompt builder to create detailed and effective prompts.",
       icon: <PenTool className="w-6 h-6" />,
+      href: "/build-prompt",
     },
     {
       title: "AI Safety and Guidance",
       description: "Understand our AI safety measures and ethical guidelines.",
       instructions: "Learn about how we ensure safe and responsible AI image generation.",
       icon: <Shield className="w-6 h-6" />,
+      href: "/safety",
     },
     {
       title: "Contact",
       description: "Get in touch with our support team.",
       instructions: "Reach out to us for any questions, feedback, or assistance.",
       icon: <MessageCircle className="w-6 h-6" />,
+      href: "/contact",
     },
   ]
 
@@ -54,11 +60,13 @@ export default function Component() {
                 <p className="text-sm text-gray-400">{page.instructions}</p>
               </CardContent>
               <CardFooter>
-                <Button 
-                  className="w-full bg-[#09fff0] text-gray-900 hover:bg-[#08e6d9] transition-colors"
-                >
-                  Go to {page.title}
-                </Button>
+                <Link href={page.href} className="w-full">
+                  <Button 
+                    className="w-full bg-[#09fff0] text-gray-900 hover:bg-[#08e6d9] transition-colors"
+                  >
+                    Go to {page.title}
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
