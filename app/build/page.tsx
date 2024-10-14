@@ -27,6 +27,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Download, Send } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 import { useChat } from 'ai/react'
+import { Poppins } from 'next/font/google'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+})
 
 const formSchema = z.object({
   persona: z.object({
@@ -119,11 +125,10 @@ export default function PromptCreationForm() {
 
   return (
     
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
       <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
-          <CardHeader>
+           <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
+        <CardHeader className={poppins.className}>
             <CardTitle>AI Prompt Creator</CardTitle>
             <CardDescription>Create your perfect AI prompt in 3 easy steps.</CardDescription>
           </CardHeader>
@@ -368,6 +373,5 @@ export default function PromptCreationForm() {
         </Card>
       </main>
       </div>
-    </div>
   )
 }
