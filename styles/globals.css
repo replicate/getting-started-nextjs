@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 input {
   @apply border;
   @apply border-solid;
