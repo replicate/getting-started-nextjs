@@ -10,5 +10,5 @@
   },
 
   // Include .tsx and .js files
-  "include": ["src/**/*.tsx", "src/**/*.js"]
+  "include": ["/**/*.tsx", "/**/*.js"]
 }
