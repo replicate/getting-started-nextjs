@@ -118,9 +118,11 @@ export default function PromptCreationForm() {
   }, [messages])
 
   return (
+    
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
       <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-        <Card className="w-[350px]">
+      <Card className="w-full max-w-md bg-gray-800 border-gray-700 mb-4">
           <CardHeader>
             <CardTitle>AI Prompt Creator</CardTitle>
             <CardDescription>Create your perfect AI prompt in 3 easy steps.</CardDescription>
@@ -365,6 +367,7 @@ export default function PromptCreationForm() {
           </CardFooter>
         </Card>
       </main>
+      </div>
     </div>
   )
 }
