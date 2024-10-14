@@ -1,20 +1,46 @@
 {
   "compilerOptions": {
     // other options...
-    "jsx": "react", // enable JS
+    "jsx": "preserve", // enable JS
     // Allow JavaScript files to be compiled
     "allowJs": true,
     "baseUrl": ".", // This must be specified if "paths" is specified
     "paths": {
-      "@/*": [".app/*"] // This assumes that your 'components' directory is inside 'src'
+      "@/*": [
+        ".app/*"
+      ] // This assumes that your 'components' directory is inside 'src'
     }
-
     // Other options...
+    ,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   // Include .tsx and .js files
-  "include": [  "./app/**/*.{js,ts,jsx,tsx}",
-  "./pages/**/*.{js,ts,jsx,tsx}",
-  "./components/**/*.{js,ts,jsx,tsx}" ],
+  "include": [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
   /** @type {import('tailwindcss').Config} */
- 
 }
