@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    // Enable JSX syntax
-    "jsx": "react", // or "preserve", depending on your use case
-
+    // other options...
+    "jsx": "react", // enable JS
     // Allow JavaScript files to be compiled
     "allowJs": true,
 
     // Other options...
   },
-
   // Include .tsx and .js files
-  "include": ["/**/*.tsx", "/**/*.js"]
+  "include": [  "./app/**/*.{js,ts,jsx,tsx}",
+  "./pages/**/*.{js,ts,jsx,tsx}",
+  "./components/**/*.{js,ts,jsx,tsx}" ],
+  /** @type {import('tailwindcss').Config} */
+ 
 }
