@@ -49,9 +49,9 @@ export default function Header() {
         {/* Desktop menu */}
         <nav className="hidden md:flex space-x-2">
           {menuItems.map((item) => (
+            <span key={item.value}>
               <Link href={item.href}>
             <Button
-              key={item.value}
               variant={activeTab === item.value ? "default" : "outline"}
               onClick={() => handleNavigation(item.value)}
               className={`${
@@ -64,6 +64,7 @@ export default function Header() {
               {item.label}
             </Button>
             </Link>
+            </span>
           ))}
         </nav>
 
