@@ -11,6 +11,10 @@ const replicate = new Replicate({
 // IMPORTANT: Set the runtime to edge
 export const runtime = 'edge';
 
+export async function GET(req) {
+  return NextResponse.json({ message: "Chat API is working. Use POST to send messages." });
+}
+
 export async function POST(req) {
   const secret = process.env.REPLICATE_WEBHOOK_SIGNING_SECRET;
 

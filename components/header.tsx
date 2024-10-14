@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -29,27 +30,30 @@ export default function Header() {
     setActiveTab(value)
     router.push(`/${value}`)
   }
+
   return (
-    <header className="border-b border-border">
+    <header className="border-b border-border bg-[#0a0a29]">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
-          <img
-            src="/placeholder.svg?height=40&width=40"
-            alt="Safe-AI UI Logo"
-            className="h-10 w-10 mr-2"
+          <Image
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/youTubeLogo-BMkXJx4GaqLQwdSXy3SEpdd4AvND3g.png"
+            alt="The Tech Margin Logo"
+            width={40}
+            height={40}
+            className="mr-2"
           />
-          <span className="text-xl font-bold text-foreground">Safe-AI UI</span>
+          <span className="text-xl font-bold text-[#ff00ff] font-poppins">The Tech Margin</span>
         </div>
 
         {/* Desktop menu */}
         <nav className="hidden md:block">
           <Tabs value={activeTab} onValueChange={handleTabChange}>
-            <TabsList>
+            <TabsList className="bg-[#0a0a29]">
               {menuItems.map((item) => (
                 <TabsTrigger
                   key={item.value}
                   value={item.value || ''}
-                  className="data-[state=active]:primary-button"
+                  className="data-[state=active]:bg-[#09fff0] data-[state=active]:text-[#0a0a29] text-[#09fff0]"
                 >
                   {item.label}
                 </TabsTrigger>
@@ -66,14 +70,18 @@ export default function Header() {
               <span className="sr-only">Open menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right">
+          <SheetContent side="right" className="bg-[#0a0a29]">
             <nav className="flex flex-col space-y-4 mt-4">
               {menuItems.map((item) => (
                 <Link key={item.value} href={item.href} passHref>
                   <Button
                     variant={activeTab === item.value ? "default" : "ghost"}
                     onClick={() => setActiveTab(item.value)}
-                    className={activeTab === item.value ? "primary-button w-full justify-start" : "w-full justify-start"}
+                    className={`w-full justify-start ${
+                      activeTab === item.value
+                        ? "bg-[#09fff0] text-[#0a0a29]"
+                        : "text-[#09fff0]"
+                    }`}
                   >
                     {item.label}
                   </Button>
@@ -82,6 +90,11 @@ export default function Header() {
             </nav>
           </SheetContent>
         </Sheet>
+      </div>
+      <div className="container mx-auto px-4 py-2">
+        <p className="font-poppins font-bold text-sm md:text-base text-center md:text-left text-[#09fff0]">
+          Safely Explore AI with TheTechMargin Tools - technology should feel safe for everyone.
+        </p>
       </div>
     </header>
   )
