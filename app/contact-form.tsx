@@ -87,7 +87,7 @@ export default function ContactForm() {
                         <Input type="email" placeholder="Your email" {...field} className="bg-gray-700 text-white border-gray-600" />
                       </FormControl>
                       <FormDescription className="text-gray-400">
-                        We'll never share your email with anyone else.
+                        We&apos;ll never share your email with anyone else.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
