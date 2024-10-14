@@ -20,7 +20,7 @@ export default function Page() {
               <AccordionTrigger>
                 <div className="flex items-center gap-2">
                   <Brain className="h-5 w-5" />
-                  <span>What AI Is and Isn't</span>
+                  <span>What AI Is and Isn&apos;t</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="pt-2 pb-4 px-4">
@@ -28,15 +28,15 @@ export default function Page() {
                   <li>AI is a branch of computer science focused on creating intelligent machines.</li>
                   <li>It involves algorithms that can learn from data and improve over time.</li>
                   <li>AI is not sentient or self-aware (at least not yet).</li>
-                  <li>It doesn't have emotions or consciousness like humans do.</li>
+                  <li>It doesn&apos;t have emotions or consciousness like humans do.</li>
                   <li>AI is not a magic solution to all problems; it has limitations.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "Explain the difference between narrow AI and general AI."
+                    <strong>Example prompt:</strong> Explain the difference between narrow AI and general AI.
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
                     <a href="https://www.ibm.com/cloud/learn/what-is-artificial-intelligence" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-                      IBM&apos; Introduction to AI
+                      IBM&apos;s Introduction to AI
                     </a>
                   </li>
                 </ul>
@@ -85,7 +85,7 @@ export default function Page() {
                   <li>Provide training and resources for team members to learn AI-related skills.</li>
                   <li>Encourage a culture of experimentation and learning with AI tools.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> How can I address my team's concerns about AI replacing their jobs?
+                    <strong>Example prompt:</strong> How can I address my team&apos;s concerns about AI replacing their jobs?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -198,7 +198,7 @@ export default function Page() {
                   <li>
                     <strong>Resource:</strong>{' '}
                     <a href="https://www.unesco.org/en/artificial-intelligence/recommendation-ethics" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-                      UNESCO's Recommendation on the Ethics of AI
+                      UNESCO&apos;s Recommendation on the Ethics of AI
                     </a>
                   </li>
                 </ul>
@@ -241,7 +241,7 @@ export default function Page() {
               </AccordionTrigger>
               <AccordionContent className="pt-2 pb-4 px-4">
                 <ul className="list-disc pl-5 space-y-4">
-                  <li>Start with small, well-defined pilot projects to prove AI's value.</li>
+                  <li>Start with small, well-defined pilot projects to prove AI&apos;s value.</li>
                   <li>Establish clear metrics for measuring the success of AI implementations.</li>
                   <li>Develop a roadmap for scaling successful AI pilots across the organization.</li>
                   <li>Invest in the necessary infrastructure and tools to support AI at scale.</li>
