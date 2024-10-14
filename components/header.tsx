@@ -13,6 +13,7 @@ const menuItems = [
   { value: "guide", label: "Guide Me", href: "/guide" },
   { value: "build", label: "Build AI", href: "/build" },
   { value: "visualize", label: "Visualize AI", href: "/visualize" },
+  { value: "learn", label: "Help Me", href: "/learn" },
   { value: "contact", label: "Contact", href: "/contact" },
 ]
 
