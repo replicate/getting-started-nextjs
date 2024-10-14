@@ -47,14 +47,17 @@ export async function POST(req) {
   // Get the last user message
   const userMessage = messages[messages.length - 1].content;
 
-  // Ask Replicate for a streaming chat completion using OpenAI's model
+  // Ask Replicate for a streaming chat completion using meta/meta-llama-3-8b-instruct model
   const response = await replicate.predictions.create({
-    // You need to use a model on Replicate that supports streaming
-    // This is an example using OpenAI's GPT-3.5-turbo
-    version: "d5da757d7bc4632efb0f7f84c4f9a6a0c1e2f9f9e4b6c5d4b3a2f1e0d9c8b7a6",
+    version: "8ca98e4faeb9f3e32b7c234a9bbf8a5a0e7f0f18e3fd8b8193916e4c8731efc7",
     input: {
       prompt: userMessage,
-      max_tokens: 500,
+      max_new_tokens: 500,
+      temperature: 0.75,
+      top_p: 0.9,
+      repetition_penalty: 1,
+      seed: 42,
+      system_prompt: "You are a helpful AI assistant.",
     },
     stream: true,
   });
