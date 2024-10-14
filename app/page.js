@@ -21,7 +21,7 @@ export default function Page() {
               <AccordionTrigger>
                 <div className="flex items-center gap-2">
                   <Brain className="h-5 w-5" />
-                  <span>What AI Is and Isn't</span>
+                  <span>What AI Is and Isn&apos;t</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -29,7 +29,7 @@ export default function Page() {
                   <li>AI is a branch of computer science focused on creating intelligent machines.</li>
                   <li>It involves algorithms that can learn from data and improve over time.</li>
                   <li>AI is not sentient or self-aware (at least not yet).</li>
-                  <li>It doesn't have emotions or consciousness like humans do.</li>
+                  <li>It doesn&apos;t have emotions or consciousness like humans do.</li>
                   <li>AI is not a magic solution to all problems; it has limitations.</li>
                 </ul>
               </AccordionContent>
@@ -162,7 +162,7 @@ export default function Page() {
               </AccordionTrigger>
               <AccordionContent>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Start with small, well-defined pilot projects to prove AI's value.</li>
+                  <li>Start with small, well-defined pilot projects to prove AI&apos;s value.</li>
                   <li>Establish clear metrics for measuring the success of AI implementations.</li>
                   <li>Develop a roadmap for scaling successful AI pilots across the organization.</li>
                   <li>Invest in the necessary infrastructure and tools to support AI at scale.</li>
