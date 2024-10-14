@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Download, Send } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
+import { useChat } from 'ai/react'
 
 const formSchema = z.object({
   persona: z.object({
@@ -48,6 +49,11 @@ export default function PromptCreationForm() {
   const [step, setStep] = useState(1)
   const [generatedPrompt, setGeneratedPrompt] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [aiResponse, setAiResponse] = useState('')
+
+  const { messages, append, isLoading: isChatLoading } = useChat({
+    api: '/api/chat',
+  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,25 +92,11 @@ export default function PromptCreationForm() {
   const handleSendToAI = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt: generatedPrompt }),
+      await append({
+        role: 'user',
+        content: generatedPrompt,
       })
-
-      if (!response.ok) {
-        throw new Error("Failed to send prompt to AI")
-      }
-
-      const data = await response.json()
-      toast({
-        title: "Prompt sent successfully",
-        description: "The AI is processing your request.",
-      })
-      // Handle the AI response here
-      console.log(data)
+      setAiResponse("AI is generating a response...")
     } catch (error) {
       toast({
         title: "Error",
@@ -115,6 +107,15 @@ export default function PromptCreationForm() {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1]
+      if (lastMessage.role === 'assistant') {
+        setAiResponse(lastMessage.content)
+      }
+    }
+  }, [messages])
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
@@ -332,11 +333,17 @@ export default function PromptCreationForm() {
                         <Download className="mr-2 h-4 w-4" />
                         Download
                       </Button>
-                      <Button onClick={handleSendToAI} disabled={isLoading}>
+                      <Button onClick={handleSendToAI} disabled={isLoading || isChatLoading}>
                         <Send className="mr-2 h-4 w-4" />
-                        {isLoading ? "Sending..." : "Send to AI"}
+                        {isLoading || isChatLoading ? "Sending..." : "Send to AI"}
                       </Button>
                     </div>
+                  </div>
+                )}
+                {aiResponse && (
+                  <div className="mt-4">
+                    <h2 className="text-lg font-semibold mb-2">AI Response:</h2>
+                    <p className="p-2 bg-gray-100 rounded text-gray-900">{aiResponse}</p>
                   </div>
                 )}
               </form>
