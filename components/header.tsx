@@ -29,7 +29,6 @@ export default function Header() {
     setActiveTab(value)
     router.push(`/${value}`)
   }
-npm
   return (
     <header className="border-b border-border">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
