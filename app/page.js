@@ -1,5 +1,5 @@
 'use client';
-import Header from "@/components/ui/header"
+import Header from "@/components/header"
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 

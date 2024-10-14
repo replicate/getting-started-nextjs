@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Toast } from "@/components/ui/toast"
 import { Toaster } from "@/components/ui/toaster"
-import Header from "@/components/ui/header"
+import Header from "@/components/header"
 
 const formSchema = z.object({
   name: z.string().min(2, {

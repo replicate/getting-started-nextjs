@@ -1,4 +1,4 @@
-import Header from "@/components/ui/header"
+import Header from "@/components/header"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
