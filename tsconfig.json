@@ -7,7 +7,7 @@
     "baseUrl": ".", // This must be specified if "paths" is specified
     "paths": {
       "@/*": [
-        ".app/*"
+        "./app/*"
       ] // This assumes that your 'components' directory is inside 'src'
     }
     // Other options...
