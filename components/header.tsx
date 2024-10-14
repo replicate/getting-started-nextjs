@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const menuItems = [
   { value: "/" , href: '/', label: 'Home' },
+  { value: "guide", label: "Guide Me", href: "/guide" },
   { value: "build", label: "Build AI", href: "/build" },
   { value: "visualize", label: "Visualize AI", href: "/visualize" },
   { value: "contact", label: "Contact", href: "/contact" },
