@@ -42,7 +42,7 @@ export default function ContactForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
-    toast({
+    Toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-gray-800 p-4">
