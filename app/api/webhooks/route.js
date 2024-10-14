@@ -50,7 +50,24 @@ export async function POST(req) {
 
   // Get the last user message
   const userMessage = messages[messages.length - 1].content;
-
+  const input = {
+    top_k: 0,
+    top_p: 0.9,
+    prompt: userMessage,
+    max_tokens: 512,
+    min_tokens: 0,
+    temperature: 0.6,
+    system_prompt: "You are a helpful assistant",
+    length_penalty: 1,
+    stop_sequences: "<|end_of_text|>,<|eot_id|>",
+    prompt_template: "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+    presence_penalty: 1.15,
+    log_performance_metrics: false
+  };
+  
+  for await (const event of replicate.stream("meta/meta-llama-3-70b-instruct", { input })) {
+    process.stdout.write(event.toString());
+  };
   // Ask Replicate for a streaming chat completion using meta/meta-llama-3-8b-instruct model
   const response = await replicate.predictions.create({
     version: "b63acc3f54e3c08cb3b081f049ebc881420035dfc6db48f554530e9c4bc02ba3",
