@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -24,17 +23,17 @@ export default function Header() {
 
   useEffect(() => {
     const currentPath = pathname.split('/')[1] // Get the first part of the path
-    setActiveTab(currentPath || "build-ai") // Default to "build-ai" if path is empty
+    setActiveTab(currentPath || "/") // Default to "/" if path is empty
   }, [pathname])
 
-  const handleTabChange = (value: string) => {
+  const handleNavigation = (value: string) => {
     setActiveTab(value)
     router.push(`/${value}`)
   }
 
   return (
-    <header className="border-b border-border bg-[#0a0a29]">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <header className="border-b border-border bg-gray-800 font-poppins">
+      <div className="container mx-auto px-4 py-6 flex items-center justify-between">
         <div className="flex items-center">
           <Image
             src="/ttm.png"
@@ -43,24 +42,26 @@ export default function Header() {
             height={40}
             className="mr-2"
           />
-          <span className="text-xl font-bold text-[#ff00ff] font-poppins">The Tech Margin</span>
+          <span className="text-2xl md:text-3xl font-bold text-[#ff00ff]">TheTechMargin</span>
         </div>
 
         {/* Desktop menu */}
-        <nav className="hidden md:block">
-          <Tabs value={activeTab} onValueChange={handleTabChange}>
-            <TabsList className="bg-[#0a0a29]">
-              {menuItems.map((item) => (
-                <TabsTrigger
-                  key={item.value}
-                  value={item.value || ''}
-                  className="data-[state=active]:bg-[#09fff0] data-[state=active]:text-[#0a0a29] text-[#09fff0]"
-                >
-                  {item.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+        <nav className="hidden md:flex space-x-2">
+          {menuItems.map((item) => (
+            <Button
+              key={item.value}
+              variant={activeTab === item.value ? "default" : "outline"}
+              onClick={() => handleNavigation(item.value)}
+              className={`${
+                activeTab === item.value
+                  ? "bg-[#09fff0] text-[#fff]"
+                  : "text-[#09fff0] hover:bg-gray-700 hover:text-[#fff]"
+              }`}
+              
+            >
+              {item.label}
+            </Button>
+          ))}
         </nav>
 
         {/* Mobile menu */}
@@ -71,29 +72,28 @@ export default function Header() {
               <span className="sr-only">Open menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="bg-[#0a0a29]">
+          <SheetContent side="right" className="bg-gray-800">
             <nav className="flex flex-col space-y-4 mt-4">
               {menuItems.map((item) => (
-                <Link key={item.value} href={item.href} passHref>
-                  <Button
-                    variant={activeTab === item.value ? "default" : "ghost"}
-                    onClick={() => setActiveTab(item.value)}
-                    className={`w-full justify-start ${
-                      activeTab === item.value
-                        ? "bg-[#09fff0] text-[#0a0a29]"
-                        : "text-[#09fff0]"
-                    }`}
-                  >
-                    {item.label}
-                  </Button>
-                </Link>
+                <Button
+                  key={item.value}
+                  variant={activeTab === item.value ? "default" : "outline"}
+                  onClick={() => handleNavigation(item.value)}
+                  className={`w-full justify-start text-lg ${
+                    activeTab === item.value
+                      ? "bg-[#09fff0] text-gray-800"
+                      : "text-[#09fff0] hover:bg-gray-700"
+                  }`}
+                >
+                  {item.label}
+                </Button>
               ))}
             </nav>
           </SheetContent>
         </Sheet>
       </div>
       <div className="container mx-auto px-4 py-2">
-        <p className="font-poppins font-bold text-sm md:text-base text-center md:text-left text-[#09fff0]">
+        <p className="font-bold text-sm md:text-base text-center md:text-left text-[#09fff0]">
           Safely Explore AI with TheTechMargin Tools - technology should feel safe for everyone.
         </p>
       </div>
