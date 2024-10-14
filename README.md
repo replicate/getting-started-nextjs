@@ -1,81 +1,84 @@
-## Getting started with Next.js and Replicate
+# Safe-AI UI
 
-<img width="100%" alt="iguana" src="https://github.com/replicate/cog/assets/2289/1d8d005c-e4a1-4a9d-bd4c-b573fc121b37">
+Safe-AI UI is an advanced web application for AI-powered image generation and management. It provides a user-friendly interface for creating, viewing, and sharing AI-generated artwork while maintaining a strong focus on safety and ethical considerations.
 
-This is a [Next.js](https://nextjs.org/) template project that's preconfigured to work with Replicate's API.
+## Features
 
-It uses Next's newer [App Router](https://nextjs.org/docs/app) and [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components).
+- **Visualize**: Generate images based on text prompts using state-of-the-art AI models.
+- **Guide**: Learn how to create effective image prompts with our comprehensive guide.
+- **Gallery**: View, manage, and showcase your AI-generated artwork.
+- **Community**: Connect with other AI art enthusiasts, share creations, and get feedback.
+- **Safety Center**: Understand our content safety measures and ethical AI practices.
+- **History**: Track your past generations and revisit favorite creations.
+- **Profile**: Manage your personal information and showcase your best work.
 
-You can use this as a quick jumping-off point to build a web app using Replicate's API, or you can recreate this codebase from scratch by following the guide at [replicate.com/docs/get-started/nextjs](https://replicate.com/docs/get-started/nextjs)
+## Getting Started
 
-## Noteworthy files
+### Prerequisites
 
-- [app/page.js](app/page.js) - React frontend that renders the home page in the browser
-- [app/api/predictions/route.js](app/api/predictions/route.js) - API endpoint that calls Replicate's API to create a prediction
-- [app/api/predictions/[id]/route.js](app/api/predictions/[id]/route.js) - API endpoint that calls Replicate's API to get the prediction result
-- [app/api/webhooks/route.js](app/api/webhooks/route.js) - API endpoint that receives and validates webhooks from Replicate
+- Node.js (v14 or later)
+- npm or yarn
 
-## Running the app
+### Installation
 
-Install dependencies:
+1. Clone the repository:
 
-```console
-npm install
-```
+   ```
+   git clone https://github.com/yourusername/safe-ai-ui.git
+   cd safe-ai-ui
+   ```
 
-Create a git-ignored text file for storing secrets like your API token:
+2. Install dependencies:
 
-```
-cp .env.example .env.local
-```
+   ```
+   npm install
+   ```
 
-Add your [Replicate API token](https://replicate.com/account/api-tokens) to `.env.local`:
+   or
 
-```
-REPLICATE_API_TOKEN=<your-token-here>
-```
+   ```
+   yarn install
+   ```
 
-Run the development server:
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory and add the necessary environment variables (refer to `.env.example` for required variables).
 
-```console
-npm run dev
-```
+4. Run the development server:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser.
+   ```
+   npm run dev
+   ```
 
-For detailed instructions on how to create and use this template, see [replicate.com/docs/get-started/nextjs](https://replicate.com/docs/get-started/nextjs)
+   or
 
+   ```
+   yarn dev
+   ```
 
-## Webhooks
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-Webhooks provide real-time updates about your predictions. When you create a prediction or training, specify a URL that you control and Replicate will send HTTP POST requests to that URL when the prediction is created, updated, and completed.
+## Technologies Used
 
-This app is set up to optionally request, receive, and validate webhooks.
+- [Next.js](https://nextjs.org/) - React framework for building the user interface
+- [shadcn/ui](https://ui.shadcn.com/) - UI component library
+- [Lucide React](https://lucide.dev/) - Icon library
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 
-### How webhooks work
+## Contributing
 
-1. You specify a webhook URL when creating a prediction in [app/api/predictions/[id]/route.js](app/api/predictions/[id]/route.js)
-1. Replicate sends POST requests to the handler in [app/api/webhooks/route.js](app/api/webhooks/route.js) as the prediction is updated.
+We welcome contributions to Safe-AI UI! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) file for details on our code of conduct and the process for submitting pull requests.
 
-### Requesting and receiving webhooks
+## License
 
-To test webhooks in development, you'll need to create a secure tunnel to your local machine, so Replicate can send POST requests to it. Follow these steps:
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-1. [Download and set up `ngrok`](https://replicate.com/docs/webhooks#testing-your-webhook-code), an open-source tool that creates a secure tunnel to your local machine so you can receive webhooks.
-1. Run ngrok to create a publicly accessible URL to your local machine: `ngrok http 3000`
-1. Copy the resulting ngrok.app URL and paste it into `.env.local`, like this: `NGROK_HOST="https://020228d056d0.ngrok.app"`.
-1. Leave ngrok running.
-1. In a separate terminal window, run the app with `npm run dev`
-1. Open [localhost:3000](http://localhost:3000) in your browser and enter a prompt to generate an image.
-1. Go to [replicate.com/webhooks](https://replicate.com/webhooks) to see your prediction status.
+## Acknowledgments
 
-### Validating incoming webhooks
+- Thanks to all the contributors who have helped shape Safe-AI UI.
+- Special thanks to the open-source community for providing the tools and libraries that make this project possible.
 
-Follow these steps to set up your development environment to validate incoming webhooks:
+## Contact
 
-1. Get your signing secret by running:
-    ```
-    curl -s -X GET -H "Authorization: Bearer $REPLICATE_API_TOKEN" https://api.replicate.com/v1/webhooks/default/secret
-    ```
-1. Add this secret to `.env.local`, like this: `REPLICATE_WEBHOOK_SIGNING_SECRET=whsec_...`
-1. Now when you run a prediction, the webhook handler in [app/api/webhooks/route.js](app/api/webhooks/route.js) will verify the webhook.
+For any questions or concerns, please open an issue on this repository or contact our support team at support@safe-ai-ui.com.
+
+Happy creating with Safe-AI UI!
