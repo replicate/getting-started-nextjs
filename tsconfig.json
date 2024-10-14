@@ -4,6 +4,10 @@
     "jsx": "react", // enable JS
     // Allow JavaScript files to be compiled
     "allowJs": true,
+    "baseUrl": ".", // This must be specified if "paths" is specified
+    "paths": {
+      "@/*": [".app/*"] // This assumes that your 'components' directory is inside 'src'
+    }
 
     // Other options...
   },
