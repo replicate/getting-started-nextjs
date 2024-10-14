@@ -1,4 +1,6 @@
-import Header from "@/components/header"
+'use client'
+
+import { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -15,8 +17,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Toast } from "@/components/ui/toast"
+import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
+import Header from "@/components/header"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -30,7 +33,10 @@ const formSchema = z.object({
   }),
 })
 
-export default function ContactForm() {
+export default function ContactPage() {
+  const { toast } = useToast()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,24 +46,37 @@ export default function ContactForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    Toast({
-      title: "You submitted the following values:",
-     /* description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-gray-800 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      )*/
-      className: "bg-gray-900 text-white",
-    })
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true)
+    try {
+      // Here you would typically send the form data to your server
+      console.log(values)
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulating API call
+      toast({
+        title: "Message sent",
+        description: "We've received your message and will get back to you soon.",
+      })
+      form.reset()
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "There was a problem sending your message. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-         <Header />
-      <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <Header />
+      <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-md w-full space-y-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold">Contact Us</h1>
+            <p className="mt-2 text-gray-400">We'd love to hear from you!</p>
+          </div>
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -87,7 +106,7 @@ export default function ContactForm() {
                         <Input type="email" placeholder="Your email" {...field} className="bg-gray-700 text-white border-gray-600" />
                       </FormControl>
                       <FormDescription className="text-gray-400">
-                        We&apos;ll never share your email with anyone else.
+                        We'll never share your email with anyone else.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -113,8 +132,12 @@ export default function ContactForm() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-[#09fff0] text-gray-900 hover:bg-[#08e6d9]">
-                  Submit
+                <Button 
+                  type="submit" 
+                  className="w-full bg-[#09fff0] text-gray-900 hover:bg-[#08e6d9]"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Submit'}
                 </Button>
               </form>
             </Form>
@@ -122,7 +145,7 @@ export default function ContactForm() {
         </div>
       </main>
       <footer className="py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
-        © 2023 Safe-AI UI. All rights reserved.
+        © {new Date().getFullYear()} Safe-AI UI. All rights reserved.
       </footer>
       <Toaster />
     </div>
