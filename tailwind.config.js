@@ -15,12 +15,12 @@ module.exports = {
     "config": "tailwind.config.js",
     "format": "auto"
   },
-  "aliases": {
+  aliases: {
     "components": "@/components",
     "utils": "@/lib/utils",
     "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
-  }
+  },
 }
 
