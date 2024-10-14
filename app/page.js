@@ -288,9 +288,6 @@ export default function Page() {
           </Accordion>
         </CardContent>
       </Card>
-      <footer className="py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
-        © {new Date().getFullYear()} Safe-AI UI. All rights reserved.
-      </footer>
     </div>
   )
 }
