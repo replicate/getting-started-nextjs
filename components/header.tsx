@@ -37,7 +37,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/youTubeLogo-BMkXJx4GaqLQwdSXy3SEpdd4AvND3g.png"
+            src="public/The Tech Margin.png"
             alt="The Tech Margin Logo"
             width={40}
             height={40}
