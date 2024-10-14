@@ -50,7 +50,6 @@ export default function Home() {
 
   return (
     <div className="container max-w-2xl mx-auto p-5">
-          <Header />
       <h1 className="py-6 text-center font-bold text-2xl">
         Imagine with AI {" "}
         <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started">
