@@ -1,5 +1,5 @@
 'use client';
-import Header from "@/components/header";
+
 import { useState, useEffect, useRef, FormEvent } from "react";
 import Image from "next/image";
 
@@ -7,6 +7,7 @@ interface Prediction {
   id: string;
   status: string;
   output: string[];
+  detail?: string; 
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
