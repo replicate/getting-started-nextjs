@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/toast"
+import { Toast, Toaster } from "@/components/ui/toast"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -123,6 +123,7 @@ export default function ContactForm() {
       <footer className="py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
         © 2023 Safe-AI UI. All rights reserved.
       </footer>
+      <Toaster />
     </div>
   )
 }
