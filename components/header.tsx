@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const menuItems = [
-  { href: '/', label: 'Home' },
+  { value: "home" , href: '/', label: 'Home' },
   { value: "build-ai", label: "Build AI", href: "/build" },
   { value: "visualize-ai", label: "Visualize AI", href: "/visualize" },
   { value: "contact-form", label: "Contact", href: "/contact" },
