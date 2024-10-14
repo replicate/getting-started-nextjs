@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Toast } from "@/components/ui/toast"
+import { Toaster } from "@/components/ui/toaster"
 import Header from "@/components/ui/header"
 
 const formSchema = z.object({
@@ -45,9 +46,9 @@ export default function ContactPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
-    toast({
+    Toast({
       title: "Form submitted",
-      description: "We've received your message and will get back to you soon.",
+     // description: "We've received your message and will get back to you soon.",
     })
   }
 
@@ -58,7 +59,7 @@ export default function ContactPage() {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <h1 className="text-3xl font-bold">Contact Us</h1>
-            <p className="mt-2 text-gray-400">We'd love to hear from you!</p>
+            <p className="mt-2 text-gray-400">We&apos;d love to hear from you!</p>
           </div>
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
             <Form {...form}>
@@ -89,7 +90,7 @@ export default function ContactPage() {
                         <Input type="email" placeholder="Your email" {...field} className="bg-gray-700 text-white border-gray-600" />
                       </FormControl>
                       <FormDescription className="text-gray-400">
-                        We'll never share your email with anyone else.
+                        We&apos;'ll never share your email with anyone else.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
