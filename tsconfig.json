@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     // Enable JSX syntax
     "jsx": "react", // or "preserve", depending on your use case
 
