@@ -44,11 +44,11 @@ export default function ContactForm() {
     console.log(values)
     Toast({
       title: "You submitted the following values:",
-      description: (
+     /* description: (
         <pre className="mt-2 w-[340px] rounded-md bg-gray-800 p-4">
           <code className="text-white">{JSON.stringify(values, null, 2)}</code>
         </pre>
-      ),
+      )*/
       className: "bg-gray-900 text-white",
     })
   }
