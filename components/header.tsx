@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const menuItems = [
-  { value: "home" , href: '/', label: 'Home' },
-  { value: "build-ai", label: "Build AI", href: "/build" },
-  { value: "visualize-ai", label: "Visualize AI", href: "/visualize" },
-  { value: "contact-form", label: "Contact", href: "/contact" },
+  { value: "/" , href: '/', label: 'Home' },
+  { value: "build", label: "Build AI", href: "/build" },
+  { value: "visualize", label: "Visualize AI", href: "/visualize" },
+  { value: "contact", label: "Contact", href: "/contact" },
 ]
 
 export default function Header() {
