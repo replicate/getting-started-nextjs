@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, FormEvent } from "react";
+import { useSearchParams } from 'next/navigation';
 import Image from "next/image";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,11 +22,17 @@ export default function Visualize() {
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [prompt, setPrompt] = useState("");
   const promptInputRef = useRef<HTMLInputElement>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
+    const urlPrompt = searchParams.get('prompt');
+    if (urlPrompt) {
+      setPrompt(decodeURIComponent(urlPrompt));
+    }
     promptInputRef.current?.focus();
-  }, []);
+  }, [searchParams]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,7 +46,7 @@ export default function Visualize() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: e.currentTarget.prompt.value,
+        prompt: prompt,
       }),
     });
     let prediction: Prediction = await response.json();
@@ -86,10 +93,10 @@ export default function Visualize() {
   };
 
   return (
-      <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
-           <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
+      <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
         <CardHeader>
-          <CardTitle className="text-center">
+          <CardTitle className="text-center text-white">
             Imagine with AI
           </CardTitle>
         </CardHeader>
@@ -100,9 +107,11 @@ export default function Visualize() {
               name="prompt"
               placeholder="Enter a prompt to display an image"
               ref={promptInputRef}
-              className="flex-grow"
+              className="flex-grow bg-gray-700 text-white placeholder-gray-400"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
             />
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="bg-[#09fff0] hover:bg-[#08e6d8] text-gray-900">
               {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Go!"}
             </Button>
           </form>
@@ -122,17 +131,17 @@ export default function Visualize() {
                   />
                 </div>
               )}
-              <p className="py-3 text-sm text-muted-foreground">Status: {prediction.status}</p>
+              <p className="py-3 text-sm text-gray-300">Status: {prediction.status}</p>
             </div>
           )}
         </CardContent>
         {prediction?.output && prediction.output.length > 0 && (
           <CardFooter className="flex justify-end space-x-2">
-            <Button onClick={handleDownload} variant="outline">
+            <Button onClick={handleDownload} variant="outline" className="text-[#09fff0] border-[#09fff0] hover:bg-[#09fff0] hover:text-gray-900">
               <Download className="mr-2 h-4 w-4" />
               Download
             </Button>
-            <Button onClick={handleEmail} variant="outline">
+            <Button onClick={handleEmail} variant="outline" className="text-[#09fff0] border-[#09fff0] hover:bg-[#09fff0] hover:text-gray-900">
               <Mail className="mr-2 h-4 w-4" />
               Email
             </Button>
