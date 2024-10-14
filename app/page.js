@@ -36,7 +36,7 @@ export default function Page() {
                   <li>
                     <strong>Resource:</strong>{' '}
                     <a href="https://www.ibm.com/cloud/learn/what-is-artificial-intelligence" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-                      IBM's Introduction to AI
+                      IBM&apos; Introduction to AI
                     </a>
                   </li>
                 </ul>
@@ -58,7 +58,7 @@ export default function Page() {
                   <li>Implement access controls and user authentication for AI applications.</li>
                   <li>Consider on-premises or private cloud solutions for highly sensitive data.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "What are the key considerations for data privacy when using AI tools?"
+                    <strong>Example prompt:</strong> What are the key considerations for data privacy when using AI tools?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -85,7 +85,7 @@ export default function Page() {
                   <li>Provide training and resources for team members to learn AI-related skills.</li>
                   <li>Encourage a culture of experimentation and learning with AI tools.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "How can I address my team's concerns about AI replacing their jobs?"
+                    <strong>Example prompt:</strong> How can I address my team's concerns about AI replacing their jobs?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -112,7 +112,7 @@ export default function Page() {
                   <li>Look for transparency reports or third-party audits of the AI tool.</li>
                   <li>Consider the geographical location of data storage and applicable laws.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "What questions should I ask an AI vendor about data usage and privacy?"
+                    <strong>Example prompt:</strong> What questions should I ask an AI vendor about data usage and privacy?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -139,7 +139,7 @@ export default function Page() {
                   <li>Utilize AI to analyze trends and predict future creative directions.</li>
                   <li>Combine AI capabilities with your unique human perspective for innovative results.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "How can I use AI to enhance my creative process in graphic design?"
+                    <strong>Example prompt:</strong> How can I use AI to enhance my creative process in graphic design?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -166,7 +166,7 @@ export default function Page() {
                   <li>Explore AI-powered customer service solutions like chatbots.</li>
                   <li>Investigate AI applications in your specific industry or sector.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "What are some common AI use cases in the healthcare industry?"
+                    <strong>Example prompt:</strong> What are some common AI use cases in the healthcare industry?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -193,7 +193,7 @@ export default function Page() {
                   <li>Regularly assess the impact of AI on stakeholders and society.</li>
                   <li>Stay informed about AI regulations and compliance requirements.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "What are the key principles of ethical AI development?"
+                    <strong>Example prompt:</strong> What are the key principles of ethical AI development?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -220,7 +220,7 @@ export default function Page() {
                   <li>Stay updated on global AI trends and emerging technologies.</li>
                   <li>Develop strategies to attract and retain AI talent in your organization.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "How is AI affecting global competition in the manufacturing sector?"
+                    <strong>Example prompt:</strong> How is AI affecting global competition in the manufacturing sector?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -247,7 +247,7 @@ export default function Page() {
                   <li>Invest in the necessary infrastructure and tools to support AI at scale.</li>
                   <li>Create cross-functional teams to manage AI implementation and integration.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "What are the key steps in moving an AI project from pilot to production?"
+                    <strong>Example prompt:</strong> What are the key steps in moving an AI project from pilot to production?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
@@ -274,7 +274,7 @@ export default function Page() {
                   <li>Explore online courses and certifications to deepen your AI knowledge.</li>
                   <li>Engage with local AI meetups or user groups in your area.</li>
                   <li className="pt-2">
-                    <strong>Example prompt:</strong> "What are some good resources for learning about AI ethics?"
+                    <strong>Example prompt:</strong> What are some good resources for learning about AI ethics?
                   </li>
                   <li>
                     <strong>Resource:</strong>{' '}
