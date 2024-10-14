@@ -37,7 +37,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
           <Image
-            src="public/The Tech Margin.png"
+            src="/ttm.png"
             alt="The Tech Margin Logo"
             width={40}
             height={40}

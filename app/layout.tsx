@@ -17,6 +17,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
+              <title>Safe AI by TheTechMargin</title>
+        <link rel="icon" href="/favicon.ico" />
       <body className={`${inter.className} bg-background text-foreground`}>
       <div className="flex flex-col min-h-screen">
            <Header />
