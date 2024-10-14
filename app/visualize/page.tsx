@@ -1,20 +1,26 @@
 'use client';
-import Header from "@/components/header"
-import { useState, useEffect, useRef } from "react";
+import Header from "@/components/header";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import Image from "next/image";
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
- 
-export default function Home() {
-  const [prediction, setPrediction] = useState(null);
-  const [error, setError] = useState(null);
-  const promptInputRef = useRef(null);
+interface Prediction {
+  id: string;
+  status: string;
+  output: string[];
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export default function Visualize() {
+  const [prediction, setPrediction] = useState<Prediction | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const promptInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    promptInputRef.current.focus();
+    promptInputRef.current?.focus();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await fetch("/api/predictions", {
       method: "POST",
@@ -22,16 +28,15 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: e.target.prompt.value,
+        prompt: e.currentTarget.prompt.value,
       }),
     });
-    let prediction = await response.json();
+    let prediction: Prediction = await response.json();
     if (response.status !== 201) {
       setError(prediction.detail);
       return;
     }
     setPrediction(prediction);
-
     while (
       prediction.status !== "succeeded" &&
       prediction.status !== "failed"
@@ -56,7 +61,6 @@ export default function Home() {
           SDXL
         </a>
       </h1>
-
       <form className="w-full flex" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -69,9 +73,7 @@ export default function Home() {
           Go!
         </button>
       </form>
-
       {error && <div>{error}</div>}
-
       {prediction && (
         <>
           {prediction.output && (
