@@ -2,6 +2,11 @@
 
 import { useState, useEffect, useRef, FormEvent } from "react";
 import Image from "next/image";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Download, Mail, Loader2 } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 interface Prediction {
   id: string;
@@ -15,6 +20,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 export default function Visualize() {
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const promptInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -23,6 +29,10 @@ export default function Visualize() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setPrediction(null);
+
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
@@ -35,6 +45,7 @@ export default function Visualize() {
     let prediction: Prediction = await response.json();
     if (response.status !== 201) {
       setError(prediction.detail);
+      setIsLoading(false);
       return;
     }
     setPrediction(prediction);
@@ -47,49 +58,90 @@ export default function Visualize() {
       prediction = await response.json();
       if (response.status !== 200) {
         setError(prediction.detail);
+        setIsLoading(false);
         return;
       }
       console.log({ prediction });
       setPrediction(prediction);
     }
+    setIsLoading(false);
+  };
+
+  const handleDownload = () => {
+    if (prediction?.output && prediction.output.length > 0) {
+      const link = document.createElement('a');
+      link.href = prediction.output[prediction.output.length - 1];
+      link.download = 'ai-generated-image.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  const handleEmail = () => {
+    if (prediction?.output && prediction.output.length > 0) {
+      const emailBody = encodeURIComponent(`Check out this AI-generated image: ${prediction.output[prediction.output.length - 1]}`);
+      window.location.href = `mailto:?subject=AI-Generated Image&body=${emailBody}`;
+    }
   };
 
   return (
     <div className="container max-w-2xl mx-auto p-5">
-      <h1 className="py-6 text-center font-bold text-2xl">
-        Imagine with AI {" "}
-        <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started">
-          SDXL
-        </a>
-      </h1>
-      <form className="w-full flex" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="flex-grow"
-          name="prompt"
-          placeholder="Enter a prompt to display an image"
-          ref={promptInputRef}
-        />
-        <button className="button" type="submit">
-          Go!
-        </button>
-      </form>
-      {error && <div>{error}</div>}
-      {prediction && (
-        <>
-          {prediction.output && (
-            <div className="image-wrapper mt-5">
-              <Image
-                fill
-                src={prediction.output[prediction.output.length - 1]}
-                alt="output"
-                sizes="100vw"
-              />
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">
+            Imagine with AI{" "}
+            <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started" className="text-blue-500 hover:underline">
+              SDXL
+            </a>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form className="flex space-x-2" onSubmit={handleSubmit}>
+            <Input
+              type="text"
+              name="prompt"
+              placeholder="Enter a prompt to display an image"
+              ref={promptInputRef}
+              className="flex-grow"
+            />
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Go!"}
+            </Button>
+          </form>
+          {error && (
+            <p className="text-red-500 mt-2">{error}</p>
+          )}
+          {prediction && (
+            <div className="mt-4">
+              {prediction.output && (
+                <div className="relative aspect-square w-full">
+                  <Image
+                    fill
+                    src={prediction.output[prediction.output.length - 1]}
+                    alt="AI-generated image"
+                    sizes="100vw"
+                    className="rounded-md object-cover"
+                  />
+                </div>
+              )}
+              <p className="py-3 text-sm text-muted-foreground">Status: {prediction.status}</p>
             </div>
           )}
-          <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
-        </>
-      )}
+        </CardContent>
+        {prediction?.output && prediction.output.length > 0 && (
+          <CardFooter className="flex justify-end space-x-2">
+            <Button onClick={handleDownload} variant="outline">
+              <Download className="mr-2 h-4 w-4" />
+              Download
+            </Button>
+            <Button onClick={handleEmail} variant="outline">
+              <Mail className="mr-2 h-4 w-4" />
+              Email
+            </Button>
+          </CardFooter>
+        )}
+      </Card>
     </div>
   );
 }
