@@ -54,7 +54,7 @@ export default function Header() {
               onClick={() => handleNavigation(item.value)}
               className={`${
                 activeTab === item.value
-                  ? "bg-[#09fff0] text-[#fff]"
+                  ? "bg-[#09fff0] text-[#000]"
                   : "text-[#09fff0] hover:bg-gray-700 hover:text-[#fff]"
               }`}
               
