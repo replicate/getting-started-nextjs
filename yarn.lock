@@ -794,6 +794,14 @@
   dependencies:
     "@radix-ui/react-slot" "1.1.0"
 
+"@radix-ui/react-progress@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-progress/-/react-progress-1.1.0.tgz#28c267885ec154fc557ec7a66cb462787312f7e2"
+  integrity sha512-aSzvnYpP725CROcxAOEBVZZSIQVQdHgBr2QQFKySsaD14u8dNT0batuXI+AAGDdAHfXH8rbnHmjYFqVJ21KkRg==
+  dependencies:
+    "@radix-ui/react-context" "1.1.0"
+    "@radix-ui/react-primitive" "2.0.0"
+
 "@radix-ui/react-roving-focus@1.1.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@radix-ui/react-roving-focus/-/react-roving-focus-1.1.0.tgz"
@@ -1180,6 +1188,11 @@ ajv@^6.12.4:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
+
+alert@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/alert/-/alert-6.0.2.tgz#59a88721d5d9cb05a713fd128a7bda08cf9cdf99"
+  integrity sha512-Oi8u2HRNN6mzpjgKGii2Uuf9iOhyfbeUAHH/5MwnVmC8DS9GrEBjZBFpoavkNj+ZKnBr/Lqx+6YKLDKrggKfPA==
 
 ansi-regex@^5.0.1:
   version "5.0.1"

@@ -4,8 +4,8 @@ import { authOptions } from "./lib/auth"
 import HomePage from "@/components/HomePage"
 import { sql } from './lib/db'
 import { Suspense } from 'react'
-import Loading from 'shadcn-loading'
-import ErrorBoundary from 'shadcn-error-boundary'
+import Loading from '@/components/Loading'
+import ErrorBoundary from "@/components/ErrorBoundary"
 
 interface User {
   id: string;

@@ -1,35 +1,35 @@
 import { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
-import { sql } from './db'
+import CredentialsProvider from "next-auth/providers/credentials"
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string
+    } & DefaultSession["user"]
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null
+        // Add your own logic here to validate the credentials
+        if (credentials?.email === "user@example.com" && credentials?.password === "password") {
+          return { id: "1", name: "User", email: "user@example.com" }
         }
-
-        const { rows } = await sql`SELECT * FROM users WHERE email = ${credentials.email}`;
-        const user = rows[0];
-
-        if (user && user.password === credentials.password) {
-          return { id: user.id, name: user.name, email: user.email };
-        }
-
-        return null;
+        return null
       }
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-    }),
+    })
   ],
   pages: {
     signIn: '/login',
@@ -48,4 +48,5 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 }
