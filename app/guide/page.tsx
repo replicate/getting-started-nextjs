@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { Brain, ChevronLeft, ChevronRight, Send } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Brain, ChevronLeft, ChevronRight, Send, Wand2 } from "lucide-react"
 import { Poppins } from 'next/font/google'
 
 const poppins = Poppins({
@@ -26,6 +27,11 @@ const styleOptions: StyleOption[] = [
   { label: "Oil Painting", value: "oil-painting" },
   { label: "Watercolor", value: "watercolor" },
   { label: "Sketch", value: "sketch" },
+  { label: "3D Render", value: "3d-render" },
+  { label: "Anime", value: "anime" },
+  { label: "Comic Book", value: "comic-book" },
+  { label: "Pixel Art", value: "pixel-art" },
+  { label: "Abstract", value: "abstract" },
 ]
 
 const colorThemes: StyleOption[] = [
@@ -34,6 +40,11 @@ const colorThemes: StyleOption[] = [
   { label: "Monochrome", value: "monochrome" },
   { label: "Dark", value: "dark" },
   { label: "Light", value: "light" },
+  { label: "Neon", value: "neon" },
+  { label: "Earthy", value: "earthy" },
+  { label: "Sepia", value: "sepia" },
+  { label: "Cyberpunk", value: "cyberpunk" },
+  { label: "Vintage", value: "vintage" },
 ]
 
 export default function Component() {
@@ -42,6 +53,7 @@ export default function Component() {
   const [formattedPrompt, setFormattedPrompt] = useState("")
   const [selectedStyle, setSelectedStyle] = useState<string>("photorealistic")
   const [selectedColorTheme, setSelectedColorTheme] = useState<string>("vibrant")
+  const [isGeneratingAIPrompt, setIsGeneratingAIPrompt] = useState(false)
   const router = useRouter()
 
   const instructions = [
@@ -113,6 +125,29 @@ export default function Component() {
     setFormattedPrompt(formattedPrompt)
   }
 
+  const generateAIPrompt = async () => {
+    setIsGeneratingAIPrompt(true)
+    try {
+      const response = await fetch('/api/generate-ai-prompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ notes, style: selectedStyle, colorTheme: selectedColorTheme }),
+      })
+      if (!response.ok) {
+        throw new Error('Failed to generate AI prompt')
+      }
+      const data = await response.json()
+      setFormattedPrompt(data.prompt)
+    } catch (error) {
+      console.error('Error generating AI prompt:', error)
+      // Handle error (e.g., show an error message to the user)
+    } finally {
+      setIsGeneratingAIPrompt(false)
+    }
+  }
+
   const sendToVisualizePage = () => {
     const encodedPrompt = encodeURIComponent(formattedPrompt)
     router.push(`/visualize?prompt=${encodedPrompt}`)
@@ -124,7 +159,7 @@ export default function Component() {
         <CardHeader className={poppins.className}>
           <div className="flex items-center gap-2">
             <Brain className="h-6 w-6 text-[#09fff0]" />
-            <CardTitle className="text-2xl font-bold text-white">{instructions[currentStep].title}</CardTitle>
+            <CardTitle className="text-2xl font-bold text-[#9FCF10]">{instructions[currentStep].title}</CardTitle>
           </div>
           <CardDescription className="text-gray-300">{instructions[currentStep].description}</CardDescription>
         </CardHeader>
@@ -134,12 +169,30 @@ export default function Component() {
               <li key={index} className="text-sm text-gray-200">{step}</li>
             ))}
           </ol>
-          <Textarea
-            placeholder="Add your thoughts here, your inputs are saved as you go"
-            value={notes[currentStep]}
-            onChange={handleNoteChange}
-            className="w-full bg-gray-700 text-white border-gray-600"
-          />
+          <div className="relative">
+            <Textarea
+              placeholder="Add your thoughts here, your inputs are saved as you go"
+              value={notes[currentStep]}
+              onChange={handleNoteChange}
+              className="w-full bg-gray-700 text-white border-gray-600 pr-12"
+            />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={generateAIPrompt}
+                    className="absolute right-2 bottom-2 bg-[#E904E5] hover:bg-[#D003D1] text-white p-2 rounded-lg"
+                    disabled={isGeneratingAIPrompt}
+                  >
+                    <Wand2 className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Generate AI-enhanced prompt based on your input</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           {currentStep === instructions.length - 1 && (
             <div className="mt-4 space-y-4">
               <div className="space-y-2">
