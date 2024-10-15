@@ -48,7 +48,7 @@ const colorThemes: StyleOption[] = [
   { label: "Vintage", value: "vintage" },
 ]
 
-export default function Component() {
+export default function GuidePage() {
   const [currentStep, setCurrentStep] = useState(0)
   const [notes, setNotes] = useState(["", "", "", ""])
   const [formattedPrompt, setFormattedPrompt] = useState("")
