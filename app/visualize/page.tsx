@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Download, Instagram, FileText, Loader2, Sparkles } from "lucide-react"
 import { Suspense } from 'react';
+import { InstagramIcon } from "lucide-react";
+
 
 interface Prediction {
   id: string
@@ -36,16 +38,20 @@ export default function VisualizeContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [prompt, setPrompt] = useState("")
   const promptInputRef = useRef<HTMLInputElement>(null)
-  const searchParams = useSearchParams()
+  const isClient = typeof window === 'object';
+  const searchParams = isClient ? useSearchParams() : '';
   const router = useRouter()
 
+
   useEffect(() => {
-    const urlPrompt = searchParams.get('prompt')
-    if (urlPrompt) {
-      setPrompt(decodeURIComponent(urlPrompt))
+    if (isClient) {
+      const urlPrompt = searchParams.get('prompt');
+      if (urlPrompt) {
+        setPrompt(decodeURIComponent(urlPrompt));
+      }
+      promptInputRef.current?.focus();
     }
-    promptInputRef.current?.focus()
-  }, [searchParams])
+  }, [searchParams, isClient]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -127,6 +133,7 @@ export default function VisualizeContent() {
   }
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans" style={{ fontFamily: "'Poppins', sans-serif" }}>
       <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4 relative overflow-hidden">
         <BackgroundPattern />
@@ -191,14 +198,16 @@ export default function VisualizeContent() {
               <Download className="mr-2 h-4 w-4" />
               Download
             </Button>
-            <Button 
-              onClick={handleInstagramShare} 
-              variant="outline" 
-              className="text-[#09fff0] border-[#09fff0] hover:bg-[#09fff0] hover:text-gray-900 rounded-[12px]"
-            >
-              <Instagram className="mr-2 h-4 w-4" />
-              Share on Instagram
-            </Button>
+        
+<Button
+  onClick={handleInstagramShare}
+  variant="outline"
+  className="text-[#09fff0] border-[#09fff0] hover:bg-[#09fff0] hover:text-gray-900 rounded-[12px]"
+>
+  <InstagramIcon className="mr-2 h-4 w-4" />
+  Share on Instagram
+</Button>
+
             <Button 
               onClick={handleImageToText} 
               variant="outline" 
@@ -211,5 +220,6 @@ export default function VisualizeContent() {
         )}
       </Card>
     </div>
+    </Suspense>
   )
 }
