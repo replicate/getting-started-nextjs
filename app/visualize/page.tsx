@@ -1,7 +1,7 @@
 
 'use client';
 import { useState, useEffect, useRef, FormEvent } from "react"
-import { useSearchParams, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import Image from "next/image"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -32,7 +32,6 @@ const BackgroundPattern = () => (
 
 export default function VisualizeContent() {
   const router = useRouter()
-  const searchParams = new URLSearchParams(router.query)
   const [prediction, setPrediction] = useState<Prediction | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -40,14 +39,15 @@ export default function VisualizeContent() {
   const promptInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    const urlPrompt = searchParams.get('prompt');
+    const urlPrompt = router.query.prompt;
     if (urlPrompt) {
-      setPrompt(decodeURIComponent(urlPrompt));
+      setPrompt(decodeURIComponent(urlPrompt as string));
     }
     promptInputRef.current?.focus();
-  }, [searchParams]);
+  }, [router.query]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+   
     e.preventDefault()
     setIsLoading(true)
     setError(null)
@@ -167,7 +167,6 @@ export default function VisualizeContent() {
             <div className="mt-4">
               {prediction.output && (
                 <div className="relative aspect-square w-full">
-                      <Suspense fallback={<div>Loading...</div>}>
                   <Image
                     fill
                     src={prediction.output[prediction.output.length - 1]}
@@ -175,7 +174,7 @@ export default function VisualizeContent() {
                     sizes="100vw"
                     className="rounded-md object-cover"
                   />
-                  </Suspense>
+       
                 </div>
               )}
               <p className="py-3 text-sm text-gray-300">Status: {prediction.status}</p>
