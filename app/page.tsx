@@ -8,37 +8,37 @@ export default function Component() {
   const pages = [
     {
       title: "Visualize",
-      description: "Generate images based on your prompts.",
-      instructions: "Enter a detailed description of the image you want to create.",
-      icon: <Image className="w-6 h-6" />,
+      description: "Harness your intuition to create powerful AI-generated visuals.",
+      instructions: "Transform your unique vision into stunning imagery that speaks to your audience.",
+      icon: <Image className="w-6 h-6 text-[#9FCF10]" />,
       href: "/visualize",
     },
     {
       title: "Guide Me",
-      description: "Learn how to use Safe-AI UI effectively.",
-      instructions: "Follow our step-by-step guide to get the most out of our platform.",
-      icon: <HelpCircle className="w-6 h-6" />,
+      description: "Unlock your potential as a leader in the AI-driven business landscape.",
+      instructions: "Embark on a journey of self-discovery and innovation, tailored to your leadership style.",
+      icon: <HelpCircle className="w-6 h-6 text-[#9FCF10]" />,
       href: "/guide",
     },
     {
       title: "Build a Prompt",
-      description: "Craft powerful prompts for image generation.",
-      instructions: "Use our prompt builder to create detailed and effective prompts.",
-      icon: <PenTool className="w-6 h-6" />,
+      description: "Craft AI prompts that resonate with your authentic voice and business goals.",
+      instructions: "Learn to communicate effectively with AI, leveraging your natural strengths as a leader.",
+      icon: <PenTool className="w-6 h-6 text-[#9FCF10]" />,
       href: "/build",
     },
     {
       title: "AI Safety and Guidance",
-      description: "Understand our AI safety measures and ethical guidelines.",
-      instructions: "Learn about how we ensure safe and responsible AI image generation.",
-      icon: <Shield className="w-6 h-6" />,
+      description: "Navigate the AI landscape with confidence, integrity, and purpose.",
+      instructions: "Explore ethical AI practices that align with your values as a conscious business leader.",
+      icon: <Shield className="w-6 h-6 text-[#9FCF10]" />,
       href: "/learn",
     },
     {
       title: "Contact",
-      description: "Get in touch with our support team.",
-      instructions: "Reach out to us for any questions, feedback, or assistance.",
-      icon: <MessageCircle className="w-6 h-6" />,
+      description: "Connect with a community of visionary individuals leveraging AI for business success.",
+      instructions: "Share insights, seek support, and collaborate on innovative AI-driven solutions.",
+      icon: <MessageCircle className="w-6 h-6 text-[#9FCF10]" />,
       href: "/contact",
     },
   ]
@@ -46,26 +46,29 @@ export default function Component() {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">TheTechMargin Safe-AI</h1><em className="text-1xl font-bold mb-8 text-center"> Explore, be curious, expand your thinking.</em>
+        <h1 className="text-3xl font-bold mb-4 text-center text-[#E904E5]">TheTechMargin Safe-AI</h1>
+        <p className="text-xl italic mb-8 text-center text-[#09fff0]">Empowering leaders to harness AI's potential with creativity, intuition, and purpose.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pages.map((page, index) => (
-            <Card key={index} className="flex flex-col bg-gray-800 border-gray-700">
+            <Card key={index} className="flex flex-col bg-gray-800 border-gray-700 hover:shadow-lg hover:shadow-[#09fff0]/10 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-gray-100">
+                <CardTitle className="flex items-center gap-2 text-[#E904E5]">
                   {page.icon}
                   {page.title}
                 </CardTitle>
-                <CardDescription className="text-gray-400">{page.description}</CardDescription>
+                <CardDescription className="text-[#09fff0]">{page.description}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-sm text-gray-400">{page.instructions}</p>
+              <CardContent className="flex-grow py-0">
+                <p className="text-sm text-gray-300">
+                  {page.instructions}
+                </p>
               </CardContent>
               <CardFooter>
                 <Link href={page.href} className="w-full">
                   <Button 
-                    className="w-full bg-[#09fff0] text-gray-900 hover:bg-[#08e6d9] transition-colors"
+                    className="w-full bg-[#09FFF0] text-gray-900 hover:bg-[#08e6d9] transition-colors"
                   >
-                    Go to {page.title}
+                    Explore {page.title}
                   </Button>
                 </Link>
               </CardFooter>
