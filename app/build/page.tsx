@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -24,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Download, Send, ChevronLeft, ChevronRight } from "lucide-react"
+import { Download, Send, ChevronLeft, ChevronRight, Copy } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 import { Poppins } from 'next/font/google'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -62,6 +62,7 @@ export default function PromptCreationForm() {
   const [generatedPrompt, setGeneratedPrompt] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [aiResponse, setAiResponse] = useState('')
+  const responseRef = useRef<HTMLDivElement>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -133,13 +134,19 @@ export default function PromptCreationForm() {
   const handleSendToAI = async () => {
     setIsLoading(true)
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ prompt: generatedPrompt }),
+        signal: controller.signal
       })
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -147,14 +154,50 @@ export default function PromptCreationForm() {
 
       const data = await response.json()
       setAiResponse(data.result)
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send prompt to AI. Please try again.",
-        variant: "destructive",
-      })
-    } finally {
+    }catch (error) {
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          toast({
+            title: "Timeout",
+            description: "The request took too long. Please try again.",
+            variant: "destructive",
+          })
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to send prompt to AI. Please try again.",
+            variant: "destructive",
+          })
+        }
+      }
+    }finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleCopyResponse = () => {
+    if (responseRef.current) {
+      const text = responseRef.current.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        toast({
+          title: "Copied",
+          description: "Response copied to clipboard",
+        })
+      }, (err) => {
+        console.error('Could not copy text: ', err);
+      });
+    }
+  }
+
+  const handleDownloadResponse = () => {
+    if (aiResponse) {
+      const element = document.createElement("a");
+      const file = new Blob([aiResponse], {type: 'text/plain'});
+      element.href = URL.createObjectURL(file);
+      element.download = "ai_response.txt";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
     }
   }
 
@@ -324,6 +367,7 @@ export default function PromptCreationForm() {
                                 <SelectTrigger className="bg-gray-700 text-gray-200">
                                   <SelectValue placeholder="Select an output format" />
                                 </SelectTrigger>
+                
                               </FormControl>
                               <SelectContent className="bg-gray-700 text-gray-200">
                                 <SelectItem value="article">Article</SelectItem>
@@ -355,7 +399,7 @@ export default function PromptCreationForm() {
                                 <SelectItem value="casual">Casual</SelectItem>
                                 <SelectItem value="humorous">Humorous</SelectItem>
                                 <SelectItem value="inspirational">Inspirational</SelectItem>
-                                <SelectItem  value="authoritative">Authoritative</SelectItem>
+                                <SelectItem value="authoritative">Authoritative</SelectItem>
                                 <SelectItem value="empathetic">Empathetic</SelectItem>
                               </SelectContent>
                             </Select>
@@ -605,7 +649,17 @@ export default function PromptCreationForm() {
                   className="mt-8 p-4 bg-gray-700 rounded-lg shadow-inner"
                 >
                   <h2 className="text-xl font-semibold mb-2 text-[#09fff0]">AI Response:</h2>
-                  <p className="p-2 bg-gray-600 rounded text-gray-200">{aiResponse}</p>
+                  <div ref={responseRef} className="p-2 bg-gray-600 rounded text-gray-200 whitespace-pre-wrap">{aiResponse}</div>
+                  <div className="mt-4 flex space-x-2">
+                    <Button onClick={handleCopyResponse} variant="outline" className="bg-gray-600 text-gray-200 hover:bg-gray-500">
+                      <Copy className="mr-2 h-4 w-4" />
+                      Copy
+                    </Button>
+                    <Button onClick={handleDownloadResponse} variant="outline" className="bg-gray-600 text-gray-200 hover:bg-gray-500">
+                      <Download className="mr-2 h-4 w-4" />
+                      Download
+                    </Button>
+                  </div>
                 </motion.div>
               )}
             </form>
