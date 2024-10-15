@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
-import { prisma } from "@prisma/client
+import { prisma } from "@/lib/prisma"
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
