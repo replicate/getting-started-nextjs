@@ -2,12 +2,11 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Brain, ChevronLeft, ChevronRight, Send, Wand2 } from "lucide-react"
 import { Poppins } from 'next/font/google'
 
@@ -169,29 +168,25 @@ export default function Component() {
               <li key={index} className="text-sm text-gray-200">{step}</li>
             ))}
           </ol>
-          <div className="relative">
+          <div className="relative mb-8">
             <Textarea
               placeholder="Add your thoughts here, your inputs are saved as you go"
               value={notes[currentStep]}
               onChange={handleNoteChange}
               className="w-full bg-gray-700 text-white border-gray-600 pr-12"
             />
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={generateAIPrompt}
-                    className="absolute right-2 bottom-2 bg-[#E904E5] hover:bg-[#D003D1] text-white p-2 rounded-lg"
-                    disabled={isGeneratingAIPrompt}
-                  >
-                    <Wand2 className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Generate AI-enhanced prompt based on your input</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="absolute right-2 bottom-2">
+              <Button
+                onClick={generateAIPrompt}
+                className="bg-[#E904E5] hover:bg-[#D003D1] text-white p-2 rounded-lg"
+                disabled={isGeneratingAIPrompt}
+              >
+                <Wand2 className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded p-2 whitespace-nowrap">
+              Generate AI-enhanced prompt based on your input
+            </div>
           </div>
           {currentStep === instructions.length - 1 && (
             <div className="mt-4 space-y-4">
@@ -232,7 +227,7 @@ export default function Component() {
           <Button
             onClick={handlePrevious}
             disabled={currentStep === 0}
-            className="bg-[#09fff0] hover:bg-[#08e6d8] text-gray-900"
+            className={`bg-[#09fff0] hover:bg-[#08e6d8] text-gray-900 ${currentStep === 0 ? 'hidden' : ''}`}
           >
             <ChevronLeft className="mr-2 h-4 w-4" />
             Previous
@@ -243,7 +238,7 @@ export default function Component() {
           {currentStep < instructions.length - 1 ? (
             <Button
               onClick={handleNext}
-              className="bg-[#09fff0] hover:bg-[#08e6d8] text-gray-900"
+              className={`bg-[#09fff0] hover:bg-[#08e6d8] text-gray-900 ${currentStep === instructions.length - 1 ? 'hidden' : ''}`}
             >
               Next
               <ChevronRight className="ml-2 h-4 w-4" />
