@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, ArrowLeft, ArrowRight } from "lucide-react"
 import { motion, AnimatePresence } from 'framer-motion'
 
 const formSchema = z.object({
@@ -126,7 +126,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full max-w-5xl mx-auto">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -138,13 +138,13 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
           >
             {step === 1 && (
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
+                <h2 className="text-2xl font-semibold mb-4 text-primary">Step {step}: {stepTitles[step - 1]}</h2>
                 <FormField
                   control={form.control}
                   name="promptType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Prompt Type</FormLabel>
+                      <FormLabel className="text-primary">Prompt Type</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -163,14 +163,14 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
               </div>
             )}
             {step === 2 && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <h2 className="text-2xl font-semibold mb-4 text-primary">Step {step}: {stepTitles[step - 1]}</h2>
                 <FormField
                   control={form.control}
                   name="persona.role"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Role</FormLabel>
+                      <FormLabel className="text-primary">Role</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -194,7 +194,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="persona.age"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Age</FormLabel>
+                      <FormLabel className="text-primary">Age</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter age"
@@ -211,7 +211,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="persona.gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Gender</FormLabel>
+                      <FormLabel className="text-primary">Gender</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -234,7 +234,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="persona.expertise"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Expertise</FormLabel>
+                      <FormLabel className="text-primary">Expertise</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter area of expertise"
@@ -249,14 +249,14 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
               </div>
             )}
             {step === 3 && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <h2 className="text-2xl font-semibold mb-4 text-primary">Step {step}: {stepTitles[step - 1]}</h2>
                 <FormField
                   control={form.control}
                   name="output.format"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Output Format</FormLabel>
+                      <FormLabel className="text-primary">Output Format</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -279,7 +279,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="output.tone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Tone</FormLabel>
+                      <FormLabel className="text-primary">Tone</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -302,7 +302,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="output.length"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Length</FormLabel>
+                      <FormLabel className="text-primary">Length</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -324,7 +324,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="output.numberOfResults"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Number of Results</FormLabel>
+                      <FormLabel className="text-primary">Number of Results</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -346,7 +346,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="output.presentationFormat"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Presentation Format</FormLabel>
+                      <FormLabel className="text-primary">Presentation Format</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
@@ -366,15 +366,15 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
               </div>
             )}
             {step === 4 && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <h2 className="text-2xl font-semibold mb-4 text-primary">Step {step}: {stepTitles[step - 1]}</h2>
                 {watchPromptType === "business" && (
                   <FormField
                     control={form.control}
                     name="businessOptions"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Business Focus Areas</FormLabel>
+                        <FormLabel className="text-primary">Business Focus Areas</FormLabel>
                         <FormControl>
                           <Select
                             onValueChange={(value) => {
@@ -419,7 +419,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                     name="lifeOptions"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Life Focus Areas</FormLabel>
+                        <FormLabel className="text-primary">Life Focus Areas</FormLabel>
                         <FormControl>
                           <Select
                             onValueChange={(value) => {
@@ -463,7 +463,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="socialPlatforms"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Social Platforms</FormLabel>
+                      <FormLabel className="text-primary">Social Platforms</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={(value) => {
@@ -506,7 +506,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   name="context"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Context</FormLabel>
+                      <FormLabel className="text-primary">Context</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describe what you want the AI to create..."
@@ -525,20 +525,20 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
             )}
           </motion.div>
         </AnimatePresence>
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-end gap-4 mt-8">
           {step > 1 && (
-            <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="bg-[#1F2937] text-[#09fff0] hover:bg-[#374151] border-[#4B5563]">
-              <ChevronLeft className="mr-2 h-4 w-4" stroke="#09fff0" />
+            <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="bg-transparent text-primary hover:bg-accent border-accent">
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Previous
             </Button>
           )}
           {step < 4 ? (
-            <Button type="button" onClick={() => setStep(step + 1)} className="bg-[#1F2937] text-[#09fff0] hover:bg-[#374151]">
+            <Button type="button" onClick={() => setStep(step + 1)} className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
               Next
-              <ChevronRight className="ml-2 h-4 w-4" stroke="#09fff0" />
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
-            <Button type="submit" className="bg-[#1F2937] text-[#09fff0] hover:bg-[#374151]">
+            <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
               Generate Prompt
             </Button>
           )}
