@@ -66,10 +66,8 @@ export const authOptions: NextAuthOptions = {
         token.username = account.providerAccountId
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : 0
       }
-      // Check if access token has expired
       if (token.accessTokenExpires && Date.now() > token.accessTokenExpires) {
-        // TODO: Implement token refresh logic here
-        // For now, we'll just return the existing token
+        // TODO: Implement token refresh logic here if needed
         return token
       }
       return token
