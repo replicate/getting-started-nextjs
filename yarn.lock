@@ -2966,6 +2966,11 @@ inherits@2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==
 
+instagram@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/instagram/-/instagram-0.0.4.tgz#ed49e921279330267cb1d98ff1bd59187af8791b"
+  integrity sha512-UAXnAOq69UN9/Sw1oDBGF/mjpBVO2y5oTQxQyARujagnKu4sa6mqbqVJ1TlTLthpLqVkQtuS24oyHBynVL9l2Q==
+
 internal-slot@^1.0.4, internal-slot@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.7.tgz#c06dcca3ed874249881007b0a5523b172a190802"
