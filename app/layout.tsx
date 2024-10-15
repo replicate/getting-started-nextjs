@@ -6,9 +6,13 @@ import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+
 export const metadata: Metadata = {
-  title: 'Safe-AI UI',
-  description: 'A dark-themed UI for Safe-AI',
+  title: 'TheTechMargin Safe-AI',
+  description: 'Technology should feel safe for everyone. Explore with curiosity and security.',
+  icons: {
+    icon: '/favicon.png',
+  },
 }
 
 export default function RootLayout({
