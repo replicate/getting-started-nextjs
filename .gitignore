@@ -30,3 +30,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+.env.
+.env.example
+.gitignore
