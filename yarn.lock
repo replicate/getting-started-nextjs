@@ -576,7 +576,7 @@
 
 "@prisma/client@^5.21.0":
   version "5.21.0"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.21.0.tgz"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.21.0.tgz#778c18964f2da113b78b5cc7ea5c274e3a3607df"
   integrity sha512-Qf2YleB3dsCRXiKSQZ+j0aF5E+ojpfqF8ExXaNAWBbAhKapMduwNvgo13K2pEuTiQq8voG2aQPQnxjsO9fOpTQ==
 
 "@prisma/debug@5.21.0":
@@ -4513,7 +4513,7 @@ pretty-format@^3.8.0:
 
 prisma@^5.21.0:
   version "5.21.0"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-5.21.0.tgz"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.21.0.tgz#4f3d070e873f8f2a584eb060b27a9ffa815b03b7"
   integrity sha512-Pc/xn2eZPiANbFFGp+YoCQSKQ5t9W/dBzQ+3HrcfrOWZAzt7n77VsVCPa9WdfTjim4CuodkCFyiP2+uGY5/gqw==
   dependencies:
     "@prisma/engines" "5.21.0"
