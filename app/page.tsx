@@ -47,18 +47,18 @@ export default function Component() {
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-4 text-center text-[#E904E5]">TheTechMargin Safe-AI</h1>
-        <p className="text-xl italic mb-8 text-center text-[#09fff0]">Empowering leaders to harness AI&apos;s potential with creativity, intuition, and purpose.</p>
+        <p className="text-xl italic mb-8 text-center text-[#09fff0]">Explore AI&apos;s potential with creativity, intuition, and purpose.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pages.map((page, index) => (
             <Card key={index} className="flex flex-col bg-gray-800 border-gray-700 hover:shadow-lg hover:shadow-[#09fff0]/10 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#E904E5]">
+                <CardTitle className="flex text-2xl items-center gap-2 text-[#E904E5]">
                   {page.icon}
                   {page.title}
                 </CardTitle>
-                <CardDescription className="text-[#09fff0]">{page.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow py-0">
+              <CardDescription className="text-[#09fff0]">{page.description}</CardDescription>
                 <p className="text-sm text-gray-300">
                   {page.instructions}
                 </p>
