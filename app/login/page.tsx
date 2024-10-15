@@ -1,63 +1,67 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { signIn } from 'next-auth/react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import { FaGoogle } from 'react-icons/fa';
+import { useState } from 'react'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { FaGoogle } from 'react-icons/fa'
+import { useToast } from "@/hooks/use-toast"
 
-export default function SignUpPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const { toast } = useToast();
+export default function LoginPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const { toast } = useToast()
+  const { data: session, status } = useSession()
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (password !== confirmPassword) {
-      toast({
-        title: "Password Mismatch",
-        description: "The passwords you entered do not match.",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-      return;
-    }
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
 
     try {
-      // Here you would typically call your API to create a new user
-      // For this example, we'll simulate a successful sign-up
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      })
+
+      if (result?.error) {
+        throw new Error(result.error)
+      }
 
       toast({
-        title: "Sign Up Successful",
-        description: "Your account has been created. Please log in.",
-      });
-      router.push('/login');
+        title: "Login Successful",
+        description: "Welcome back!",
+      })
+      router.push('/')
     } catch (error) {
       toast({
-        title: "Sign Up Failed",
-        description: error instanceof Error ? error.message : "An error occurred during sign up.",
+        title: "Login Failed",
+        description: error instanceof Error ? error.message : "An error occurred during login.",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  const handleGoogleSignUp = () => {
-    signIn('google', { callbackUrl: '/' });
-  };
+  const handleGoogleLogin = () => {
+    signIn('google', { callbackUrl: '/' })
+  }
+
+  if (status === "loading") {
+    return <div>Loading...</div>
+  }
+
+  if (session) {
+    router.push('/')
+    return null
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 font-sans">
@@ -72,23 +76,11 @@ export default function SignUpPage() {
               className="mx-auto"
             />
           </div>
-          <CardTitle className="text-2xl font-bold text-center text-[#09fff0]">Sign Up for Safe-AI</CardTitle>
-          <CardDescription className="text-center text-gray-300">Create your account to explore AI safely</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center text-[#09fff0]">Safe-AI</CardTitle>
+          <CardDescription className="text-center text-gray-300">Explore AI with curiosity, utility and safety.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignUp} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-white">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
-              />
-            </div>
+          <form onSubmit={handleEmailLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-white">Email</Label>
               <Input
@@ -106,21 +98,9 @@ export default function SignUpPage() {
               <Input
                 id="password"
                 type="password"
-                placeholder="Create a password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-                className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-white">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
               />
@@ -130,30 +110,30 @@ export default function SignUpPage() {
               className="w-full bg-[#09fff0] hover:bg-[#08e6d8] text-gray-900 font-semibold"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing Up...' : 'Sign Up'}
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
           <div className="mt-4 text-center text-gray-300">
-            <span>Or sign up with</span>
+            <span>Or continue with</span>
           </div>
           <Button
-            onClick={handleGoogleSignUp}
+            onClick={handleGoogleLogin}
             className="w-full mt-4 bg-white hover:bg-gray-200 text-gray-900 font-semibold flex items-center justify-center"
           >
             <FaGoogle className="mr-2" />
-            Sign up with Google
+            Sign in with Google
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center">
           <Button
             variant="link"
             className="text-[#E904E5] hover:text-[#D003D1]"
-            onClick={() => router.push('/login')}
+            onClick={() => router.push('/signup')}
           >
-            Already have an account? Log in
+            Don&apos;t have an account? Sign up
           </Button>
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }
