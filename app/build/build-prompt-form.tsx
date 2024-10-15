@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, Controller } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from 'framer-motion'
@@ -67,6 +68,7 @@ interface BuildPromptFormProps {
 
 export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFormProps) {
   const [step, setStep] = useState(1)
+  const stepTitles = ["Choose your prompt type", "Who are you asking as?", "What kind of output do you want?", "Provide context for your prompt"];
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -136,22 +138,22 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
           >
             {step === 1 && (
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 1: Choose your prompt type</h2>
+                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
                 <FormField
                   control={form.control}
                   name="promptType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-200">Prompt Type</FormLabel>
+                      <FormLabel className="text-white">Prompt Type</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-gray-800 text-[#09fff0] border-gray-700 focus:ring-[#09fff0] focus:ring-opacity-50">
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
                             <SelectValue placeholder="Select a prompt type" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="business" className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">Business</SelectItem>
-                          <SelectItem value="personal" className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">Personal</SelectItem>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="business" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Business</SelectItem>
+                          <SelectItem value="personal" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Personal</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage className="text-red-400" />
@@ -162,50 +164,217 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
             )}
             {step === 2 && (
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 2: Who are you asking as?</h2>
+                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
                 <FormField
                   control={form.control}
                   name="persona.role"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-200">Role</FormLabel>
+                      <FormLabel className="text-white">Role</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-gray-800 text-[#09fff0] border-gray-700 focus:ring-[#09fff0] focus:ring-opacity-50">
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
                             <SelectValue placeholder="Select a role" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="student" className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">Student</SelectItem>
-                          <SelectItem value="professional" className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">Professional</SelectItem>
-                          <SelectItem value="entrepreneur" className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">Entrepreneur</SelectItem>
-                          <SelectItem value="manager" className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">Manager</SelectItem>
-                          <SelectItem value="executive" className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">Executive</SelectItem>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="student" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Student</SelectItem>
+                          <SelectItem value="professional" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Professional</SelectItem>
+                          <SelectItem value="entrepreneur" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Entrepreneur</SelectItem>
+                          <SelectItem value="manager" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Manager</SelectItem>
+                          <SelectItem value="executive" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Executive</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage className="text-red-400" />
                     </FormItem>
                   )}
                 />
-                {/* Add similar FormField components for age, gender, and expertise */}
+                <FormField
+                  control={form.control}
+                  name="persona.age"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Age</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter age"
+                          className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="persona.gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Gender</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectValue placeholder="Select gender" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="male" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Male</SelectItem>
+                          <SelectItem value="female" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Female</SelectItem>
+                          <SelectItem value="non-binary" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Non-binary</SelectItem>
+                          <SelectItem value="other" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="persona.expertise"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Expertise</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter area of expertise"
+                          className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
               </div>
             )}
             {step === 3 && (
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 3: What kind of output do you want?</h2>
-                {/* Add FormField components for output format, tone, length, numberOfResults, and presentationFormat */}
+                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
+                <FormField
+                  control={form.control}
+                  name="output.format"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Output Format</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectValue placeholder="Select output format" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="blog-post" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Blog Post</SelectItem>
+                          <SelectItem value="social-media-post" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Social Media Post</SelectItem>
+                          <SelectItem value="email" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Email</SelectItem>
+                          <SelectItem value="article" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Article</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="output.tone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Tone</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectValue placeholder="Select tone" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="formal" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Formal</SelectItem>
+                          <SelectItem value="casual" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Casual</SelectItem>
+                          <SelectItem value="humorous" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Humorous</SelectItem>
+                          <SelectItem value="serious" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Serious</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="output.length"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Length</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectValue placeholder="Select length" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="short" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Short</SelectItem>
+                          <SelectItem value="medium" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Medium</SelectItem>
+                          <SelectItem value="long" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Long</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="output.numberOfResults"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Number of Results</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectValue placeholder="Select number of results" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="1" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">1</SelectItem>
+                          <SelectItem value="3" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">3</SelectItem>
+                          <SelectItem value="5" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">5</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="output.presentationFormat"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Presentation Format</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectValue placeholder="Select presentation format" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="bg-[#374151] border-[#4B5563]">
+                          <SelectItem value="paragraph" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Paragraph</SelectItem>
+                          <SelectItem value="bullet-points" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Bullet Points</SelectItem>
+                          <SelectItem value="numbered-list" className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">Numbered List</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
               </div>
             )}
             {step === 4 && (
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 4: Provide context for your prompt</h2>
+                <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step {step}: {stepTitles[step - 1]}</h2>
                 {watchPromptType === "business" && (
-                  <Controller
-                    name="businessOptions"
+                  <FormField
                     control={form.control}
+                    name="businessOptions"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-200">Business Focus Areas</FormLabel>
+                        <FormLabel className="text-white">Business Focus Areas</FormLabel>
                         <FormControl>
                           <Select
                             onValueChange={(value) => {
@@ -213,12 +382,12 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                               field.onChange(newValue);
                             }}
                           >
-                            <SelectTrigger className="bg-gray-800 text-[#09fff0] border-gray-700 focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
                               <SelectValue placeholder="Select business areas" />
                             </SelectTrigger>
-                            <SelectContent className="bg-gray-800 border-gray-700">
+                            <SelectContent className="bg-[#374151] border-[#4B5563]">
                               {businessOptions.map((option) => (
-                                <SelectItem key={option} value={option} className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">{option}</SelectItem>
+                                <SelectItem key={option} value={option} className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">{option}</SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
@@ -233,6 +402,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                                 const newValue = field.value?.filter((o: string) => o !== option);
                                 field.onChange(newValue);
                               }}
+                              className="bg-[#4B5563] text-white hover:bg-[#6B7280]"
                             >
                               {option} ✕
                             </Button>
@@ -244,12 +414,12 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                   />
                 )}
                 {watchPromptType === "personal" && (
-                  <Controller
-                    name="lifeOptions"
+                  <FormField
                     control={form.control}
+                    name="lifeOptions"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-200">Life Focus Areas</FormLabel>
+                        <FormLabel className="text-white">Life Focus Areas</FormLabel>
                         <FormControl>
                           <Select
                             onValueChange={(value) => {
@@ -257,12 +427,12 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                               field.onChange(newValue);
                             }}
                           >
-                            <SelectTrigger className="bg-gray-800 text-[#09fff0] border-gray-700 focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
                               <SelectValue placeholder="Select life areas" />
                             </SelectTrigger>
-                            <SelectContent className="bg-gray-800 border-gray-700">
+                            <SelectContent className="bg-[#374151] border-[#4B5563]">
                               {lifeOptions.map((option) => (
-                                <SelectItem key={option} value={option} className="text-[#09fff0] hover:bg-gray-700 focus:bg-gray-700">{option}</SelectItem>
+                                <SelectItem key={option} value={option} className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">{option}</SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
@@ -277,6 +447,7 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                                 const newValue = field.value?.filter((o: string) => o !== option);
                                 field.onChange(newValue);
                               }}
+                              className="bg-[#4B5563] text-white hover:bg-[#6B7280]"
                             >
                               {option} ✕
                             </Button>
@@ -289,18 +460,61 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
                 )}
                 <FormField
                   control={form.control}
+                  name="socialPlatforms"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Social Platforms</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={(value) => {
+                            const newValue = [...(field.value || []), value];
+                            field.onChange(newValue);
+                          }}
+                        >
+                          <SelectTrigger className="bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50">
+                            <SelectValue placeholder="Select social platforms" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-[#374151] border-[#4B5563]">
+                            {socialPlatforms.map((platform) => (
+                              <SelectItem key={platform} value={platform} className="text-white hover:bg-[#4B5563] focus:bg-[#4B5563]">{platform}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {field.value?.map((platform: string) => (
+                          <Button
+                            key={platform}
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => {
+                              const newValue = field.value?.filter((p: string) => p !== platform);
+                              field.onChange(newValue);
+                            }}
+                            className="bg-[#4B5563] text-white hover:bg-[#6B7280]"
+                          >
+                            {platform} ✕
+                          </Button>
+                        ))}
+                      </div>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="context"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-200">Context</FormLabel>
+                      <FormLabel className="text-white">Context</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describe what you want the AI to create..."
-                          className="resize-none bg-gray-700 text-gray-200 h-32"
+                          className="resize-none bg-[#374151] text-white border-[#4B5563] focus:ring-[#09fff0] focus:ring-opacity-50"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription className="text-gray-400">
+                      <FormDescription className="text-[#9CA3AF]">
                         Provide detailed information about what you want the AI to create.
                       </FormDescription>
                       <FormMessage className="text-red-400" />
@@ -313,18 +527,18 @@ export function BuildPromptForm({ onGeneratePrompt, promptSent }: BuildPromptFor
         </AnimatePresence>
         <div className="flex justify-between mt-8">
           {step > 1 && (
-            <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="bg-gray-700 text-gray-200 hover:bg-gray-600">
-              <ChevronLeft className="mr-2 h-4 w-4" />
+            <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="bg-[#1F2937] text-[#09fff0] hover:bg-[#374151] border-[#4B5563]">
+              <ChevronLeft className="mr-2 h-4 w-4" stroke="#09fff0" />
               Previous
             </Button>
           )}
           {step < 4 ? (
-            <Button type="button" onClick={() => setStep(step + 1)} className="bg-[#09fff0] text-gray-900 hover:bg-[#09fff0]/90">
+            <Button type="button" onClick={() => setStep(step + 1)} className="bg-[#1F2937] text-[#09fff0] hover:bg-[#374151]">
               Next
-              <ChevronRight className="ml-2 h-4 w-4" />
+              <ChevronRight className="ml-2 h-4 w-4" stroke="#09fff0" />
             </Button>
           ) : (
-            <Button type="submit" className="bg-[#09fff0] text-gray-900 hover:bg-[#09fff0]/90">
+            <Button type="submit" className="bg-[#1F2937] text-[#09fff0] hover:bg-[#374151]">
               Generate Prompt
             </Button>
           )}
