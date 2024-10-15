@@ -1,46 +1,53 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { FaGoogle } from 'react-icons/fa';
-import { useToast } from "@/hooks/use-toast"
 
-export default function LoginPage() {
+export default function SignUpPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email,
-        password,
+    if (password !== confirmPassword) {
+      toast({
+        title: "Password Mismatch",
+        description: "The passwords you entered do not match.",
+        variant: "destructive",
       });
+      setIsLoading(false);
+      return;
+    }
 
-      if (result?.error) {
-        throw new Error(result.error);
-      }
+    try {
+      // Here you would typically call your API to create a new user
+      // For this example, we'll simulate a successful sign-up
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
-        title: "Login Successful",
-        description: "Welcome back!",
+        title: "Sign Up Successful",
+        description: "Your account has been created. Please log in.",
       });
-      router.push('/dashboard');
+      router.push('/login');
     } catch (error) {
       toast({
-        title: "Login Failed",
-        description: error instanceof Error ? error.message : "An error occurred during login.",
+        title: "Sign Up Failed",
+        description: error instanceof Error ? error.message : "An error occurred during sign up.",
         variant: "destructive",
       });
     } finally {
@@ -48,22 +55,40 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    signIn('google', { callbackUrl: '/dashboard' });
+  const handleGoogleSignUp = () => {
+    signIn('google', { callbackUrl: '/' });
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-[#09fff0] mb-2">TheTechMargin</h1>
-      </div>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 font-sans">
       <Card className="w-full max-w-md bg-gray-800 border-gray-700">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center text-[#09fff0]">Safe-AI</CardTitle>
-          <CardDescription className="text-center text-gray-300">Explore AI with curiosity, utility and safety.</CardDescription>
+          <div className="text-center mb-4">
+            <Image
+              src="/ttm.png"
+              alt="The Tech Margin Logo"
+              width={60}
+              height={60}
+              className="mx-auto"
+            />
+          </div>
+          <CardTitle className="text-2xl font-bold text-center text-[#09fff0]">Sign Up for Safe-AI</CardTitle>
+          <CardDescription className="text-center text-gray-300">Create your account to explore AI safely</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleEmailLogin} className="space-y-4">
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-white">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-white">Email</Label>
               <Input
@@ -81,9 +106,21 @@ export default function LoginPage() {
               <Input
                 id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+                className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-white">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
               />
@@ -93,27 +130,27 @@ export default function LoginPage() {
               className="w-full bg-[#09fff0] hover:bg-[#08e6d8] text-gray-900 font-semibold"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? 'Signing Up...' : 'Sign Up'}
             </Button>
           </form>
           <div className="mt-4 text-center text-gray-300">
-            <span>Or continue with</span>
+            <span>Or sign up with</span>
           </div>
           <Button
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleSignUp}
             className="w-full mt-4 bg-white hover:bg-gray-200 text-gray-900 font-semibold flex items-center justify-center"
           >
             <FaGoogle className="mr-2" />
-            Sign in with Google
+            Sign up with Google
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center">
           <Button
             variant="link"
             className="text-[#E904E5] hover:text-[#D003D1]"
-            onClick={() => router.push('/signup')}
+            onClick={() => router.push('/login')}
           >
-            Don't have an account? Sign up
+            Already have an account? Log in
           </Button>
         </CardFooter>
       </Card>
