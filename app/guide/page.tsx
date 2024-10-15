@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from "react"
@@ -6,6 +5,8 @@ import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
 import { Brain, ChevronLeft, ChevronRight, Send } from "lucide-react"
 import { Poppins } from 'next/font/google'
 
@@ -14,10 +15,33 @@ const poppins = Poppins({
   weight: ['300', '400', '500', '600'],
 })
 
+interface StyleOption {
+  label: string
+  value: string
+}
+
+const styleOptions: StyleOption[] = [
+  { label: "Photorealistic", value: "photorealistic" },
+  { label: "Digital Art", value: "digital-art" },
+  { label: "Oil Painting", value: "oil-painting" },
+  { label: "Watercolor", value: "watercolor" },
+  { label: "Sketch", value: "sketch" },
+]
+
+const colorThemes: StyleOption[] = [
+  { label: "Vibrant", value: "vibrant" },
+  { label: "Pastel", value: "pastel" },
+  { label: "Monochrome", value: "monochrome" },
+  { label: "Dark", value: "dark" },
+  { label: "Light", value: "light" },
+]
+
 export default function Component() {
   const [currentStep, setCurrentStep] = useState(0)
   const [notes, setNotes] = useState(["", "", "", ""])
   const [formattedPrompt, setFormattedPrompt] = useState("")
+  const [selectedStyle, setSelectedStyle] = useState<string>("photorealistic")
+  const [selectedColorTheme, setSelectedColorTheme] = useState<string>("vibrant")
   const router = useRouter()
 
   const instructions = [
@@ -76,7 +100,7 @@ export default function Component() {
   const generatePrompt = () => {
     const [character, attributes, scene, details] = notes.map(note => note.trim())
     const formattedPrompt = `
-      A highly detailed, professional portrait of an ideal ${character}.
+      A highly detailed, ${selectedStyle} image of an ideal ${character}.
       
       Key attributes: ${attributes}.
       
@@ -84,21 +108,19 @@ export default function Component() {
       
       Additional details: The character is ${details}.
       
-      Style: Photorealistic, high resolution, dramatic lighting.
+      Style: ${selectedStyle}, ${selectedColorTheme} color theme, high resolution, dramatic lighting.
     `.trim().replace(/\n\s+/g, ' ')
     setFormattedPrompt(formattedPrompt)
   }
 
   const sendToVisualizePage = () => {
-    // Encode the prompt to be sent as a URL parameter
     const encodedPrompt = encodeURIComponent(formattedPrompt)
-    // Navigate to the visualize page with the prompt as a query parameter
     router.push(`/visualize?prompt=${encodedPrompt}`)
   }
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
-           <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
+      <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
         <CardHeader className={poppins.className}>
           <div className="flex items-center gap-2">
             <Brain className="h-6 w-6 text-[#09fff0]" />
@@ -118,6 +140,40 @@ export default function Component() {
             onChange={handleNoteChange}
             className="w-full bg-gray-700 text-white border-gray-600"
           />
+          {currentStep === instructions.length - 1 && (
+            <div className="mt-4 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="style" className="text-white">Select Style</Label>
+                <Select value={selectedStyle} onValueChange={setSelectedStyle}>
+                  <SelectTrigger id="style" className="w-full bg-gray-700 text-white border-gray-600">
+                    <SelectValue placeholder="Select style" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {styleOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="color-theme" className="text-white">Select Color Theme</Label>
+                <Select value={selectedColorTheme} onValueChange={setSelectedColorTheme}>
+                  <SelectTrigger id="color-theme" className="w-full bg-gray-700 text-white border-gray-600">
+                    <SelectValue placeholder="Select color theme" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {colorThemes.map((theme) => (
+                      <SelectItem key={theme.value} value={theme.value}>
+                        {theme.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
