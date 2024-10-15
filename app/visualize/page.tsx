@@ -1,14 +1,15 @@
 
 'use client';
-import { useState, useEffect, useRef, FormEvent } from "react"
-import { useRouter } from 'next/router'
-import Image from "next/image"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Download, Instagram, FileText, Loader2, Sparkles } from "lucide-react"
+import { useState, useEffect, useRef, FormEvent } from "react";
+import { useRouter } from 'next/router';
+import Image from "next/image";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Download, Instagram, FileText, Loader2, Sparkles } from "lucide-react";
 import { Suspense } from 'react';
 import { InstagramIcon } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface Prediction {
   id: string
