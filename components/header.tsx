@@ -4,9 +4,10 @@ import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu } from "lucide-react"
+import { Menu, LogIn, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const menuItems = [
   { value: "/" , href: '/', label: 'Home' },
@@ -21,15 +22,24 @@ export default function Header() {
   const router = useRouter()
   const pathname = usePathname()
   const [activeTab, setActiveTab] = useState("")
+  const { data: session } = useSession()
 
   useEffect(() => {
-    const currentPath = pathname.split('/')[1] // Get the first part of the path
-    setActiveTab(currentPath || "/") // Default to "/" if path is empty
+    const currentPath = pathname.split('/')[1]
+    setActiveTab(currentPath || "/")
   }, [pathname])
 
   const handleNavigation = (value: string) => {
     setActiveTab(value)
     router.push(`/${value}`)
+  }
+
+  const handleAuthAction = () => {
+    if (session) {
+      signOut()
+    } else {
+      signIn()
+    }
   }
 
   return (
@@ -47,25 +57,41 @@ export default function Header() {
         </div>
 
         {/* Desktop menu */}
-        <nav className="hidden md:flex space-x-2">
+        <nav className="hidden md:flex space-x-2 items-center">
           {menuItems.map((item) => (
             <span key={item.value}>
               <Link href={item.href}>
-            <Button
-              variant={activeTab === item.value ? "default" : "outline"}
-              onClick={() => handleNavigation(item.value)}
-              className={`${
-                activeTab === item.value
-                  ? "bg-[#09fff0] text-[#000]"
-                  : "text-[#09fff0] hover:bg-gray-700 hover:text-[#fff]"
-              }`}
-              
-            >
-              {item.label}
-            </Button>
-            </Link>
+                <Button
+                  variant={activeTab === item.value ? "default" : "outline"}
+                  onClick={() => handleNavigation(item.value)}
+                  className={`${
+                    activeTab === item.value
+                      ? "bg-[#09fff0] text-[#000]"
+                      : "text-[#09fff0] hover:bg-gray-700 hover:text-[#fff]"
+                  }`}
+                >
+                  {item.label}
+                </Button>
+              </Link>
             </span>
           ))}
+          <Button
+            variant="outline"
+            onClick={handleAuthAction}
+            className="ml-2 text-[#09fff0] hover:bg-gray-700 hover:text-[#fff] flex items-center"
+          >
+            {session ? (
+              <>
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </>
+            ) : (
+              <>
+                <LogIn className="h-4 w-4 mr-2" />
+                Login
+              </>
+            )}
+          </Button>
         </nav>
 
         {/* Mobile menu */}
@@ -92,6 +118,23 @@ export default function Header() {
                   {item.label}
                 </Button>
               ))}
+              <Button
+                variant="outline"
+                onClick={handleAuthAction}
+                className="w-full justify-start text-lg text-[#09fff0] hover:bg-gray-700"
+              >
+                {session ? (
+                  <>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </>
+                ) : (
+                  <>
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Login
+                  </>
+                )}
+              </Button>
             </nav>
           </SheetContent>
         </Sheet>
