@@ -8,6 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Download, Instagram, FileText, Loader2, Sparkles } from "lucide-react"
+import { Suspense } from 'react';
 
 interface Prediction {
   id: string
@@ -165,6 +166,7 @@ export default function VisualizeContent() {
             <div className="mt-4">
               {prediction.output && (
                 <div className="relative aspect-square w-full">
+                      <Suspense fallback={<div>Loading...</div>}>
                   <Image
                     fill
                     src={prediction.output[prediction.output.length - 1]}
@@ -172,6 +174,7 @@ export default function VisualizeContent() {
                     sizes="100vw"
                     className="rounded-md object-cover"
                   />
+                  </Suspense>
                 </div>
               )}
               <p className="py-3 text-sm text-gray-300">Status: {prediction.status}</p>
