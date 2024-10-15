@@ -1,8 +1,7 @@
 
 'use client';
-import { toast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef, FormEvent } from "react"
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/router'
 import Image from "next/image"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -10,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Download, Instagram, FileText, Loader2, Sparkles } from "lucide-react"
 import { Suspense } from 'react';
 import { InstagramIcon } from "lucide-react";
-
 
 interface Prediction {
   id: string
@@ -33,25 +31,21 @@ const BackgroundPattern = () => (
 )
 
 export default function VisualizeContent() {
+  const router = useRouter()
+  const searchParams = new URLSearchParams(router.query)
   const [prediction, setPrediction] = useState<Prediction | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [prompt, setPrompt] = useState("")
   const promptInputRef = useRef<HTMLInputElement>(null)
-  const isClient = typeof window === 'object';
-  const searchParams = isClient ? useSearchParams() : '';
-  const router = useRouter()
-
 
   useEffect(() => {
-    if (isClient) {
-      const urlPrompt = searchParams.get('prompt');
-      if (urlPrompt) {
-        setPrompt(decodeURIComponent(urlPrompt));
-      }
-      promptInputRef.current?.focus();
+    const urlPrompt = searchParams.get('prompt');
+    if (urlPrompt) {
+      setPrompt(decodeURIComponent(urlPrompt));
     }
-  }, [searchParams, isClient]);
+    promptInputRef.current?.focus();
+  }, [searchParams]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
