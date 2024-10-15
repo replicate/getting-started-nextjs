@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { FaGoogle } from 'react-icons/fa'
 import { useToast } from "@/hooks/use-toast"
 import { Image as ImageIcon, HelpCircle, PenTool, Shield, MessageCircle } from "lucide-react"
-import Header from '@/components/Header'
+import Header from '@/components/header'
 
 const pages = [
   {
