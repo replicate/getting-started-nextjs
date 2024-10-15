@@ -24,7 +24,7 @@
     "clsx": "^2.1.1",
     "eslint": "8.54.0",
     "eslint-config-next": "14.0.3",
-    "framer-motion": "^11.11.8",
+    "framer-motion": "^11.11.9",
     "instagram": "^0.0.4",
     "link": "^2.1.1",
     "lucide-react": "^0.452.0",
