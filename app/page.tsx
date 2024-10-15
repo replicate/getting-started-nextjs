@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -61,7 +61,7 @@ export default function HomePage() {
   const { toast } = useToast()
   const { data: session, status } = useSession()
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     let isValid = true
     const newErrors = { email: '', password: '' }
 
@@ -83,9 +83,9 @@ export default function HomePage() {
 
     setErrors(newErrors)
     return isValid
-  }
+  }, [email, password])
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleEmailLogin = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!validateForm()) {
@@ -119,11 +119,11 @@ export default function HomePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [email, password, validateForm, toast, router])
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = useCallback(() => {
     signIn('google', { callbackUrl: '/' })
-  }
+  }, [])
 
   if (status === "loading") {
     return <div>Loading...</div>
