@@ -7,14 +7,14 @@ import { Image, HelpCircle, PenTool, Shield, MessageCircle } from "lucide-react"
 export default function Component() {
   const pages = [
     {
-      title: "Visualize",
+      title: "Create My Ideal Persona",
       description: "Harness your intuition to create powerful AI-generated visuals.",
       instructions: "Transform your unique vision into stunning imagery that speaks to your audience.",
       icon: <Image className="w-6 h-6 text-[#9FCF10]" />,
       href: "/visualize",
     },
     {
-      title: "Guide Me",
+      title: "Create Images",
       description: "Unlock your potential as a leader in the AI-driven business landscape.",
       instructions: "Embark on a journey of self-discovery and innovation, tailored to your leadership style.",
       icon: <HelpCircle className="w-6 h-6 text-[#9FCF10]" />,
@@ -28,7 +28,7 @@ export default function Component() {
       href: "/build",
     },
     {
-      title: "AI Safety and Guidance",
+      title: "Teach Me About AI",
       description: "Navigate the AI landscape with confidence, integrity, and purpose.",
       instructions: "Explore ethical AI practices that align with your values as a conscious business leader.",
       icon: <Shield className="w-6 h-6 text-[#9FCF10]" />,
@@ -57,7 +57,7 @@ export default function Component() {
                   {page.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow py-0">
+              <CardContent className="flex-grow py-5">
               <CardDescription className="text-[#09fff0]">{page.description}</CardDescription>
                 <p className="text-sm text-gray-300">
                   {page.instructions}

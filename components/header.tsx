@@ -10,10 +10,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const menuItems = [
   { value: "/" , href: '/', label: 'Home' },
-  { value: "guide", label: "Guide Me", href: "/guide" },
-  { value: "build", label: "Build AI", href: "/build" },
-  { value: "visualize", label: "Visualize AI", href: "/visualize" },
-  { value: "learn", label: "Help Me", href: "/learn" },
+  { value: "guide", label: "Create My Ideal Persona", href: "/guide" },
+  { value: "build", label: "Build My Perfect Prompt", href: "/build" },
+  { value: "visualize", label: "Create Images", href: "/visualize" },
+  { value: "learn", label: "Teach Me About AI", href: "/learn" },
   { value: "contact", label: "Contact", href: "/contact" },
 ]
 
