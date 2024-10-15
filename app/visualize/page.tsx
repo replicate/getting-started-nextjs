@@ -1,16 +1,13 @@
-
 'use client';
+
 import { useState, useEffect, useRef, FormEvent } from "react";
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from "next/image";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Download, Instagram, FileText, Loader2, Sparkles } from "lucide-react";
-import { Suspense } from 'react';
-import { InstagramIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { GetServerSidePropsContext } from 'next'
 
 interface Prediction {
   id: string;
@@ -32,25 +29,13 @@ const BackgroundPattern = () => (
   </svg>
 );
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { prompt } = context.query;
-  return {
-    props: {
-      initialPrompt: prompt ? decodeURIComponent(prompt as string) : "",
-    },
-  };
-}
-
-interface VisualizeContentProps {
-  initialPrompt: string;
-}
-
-export default function VisualizeContent({ initialPrompt }: VisualizeContentProps) {
+export default function VisualizeContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [prompt, setPrompt] = useState(initialPrompt);
+  const [prompt, setPrompt] = useState(searchParams.get('prompt') || "");
   const promptInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -58,7 +43,6 @@ export default function VisualizeContent({ initialPrompt }: VisualizeContentProp
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-   
     e.preventDefault()
     setIsLoading(true)
     setError(null)
@@ -138,7 +122,6 @@ export default function VisualizeContent({ initialPrompt }: VisualizeContentProp
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans" style={{ fontFamily: "'Poppins', sans-serif" }}>
       <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4 relative overflow-hidden">
         <BackgroundPattern />
@@ -185,7 +168,6 @@ export default function VisualizeContent({ initialPrompt }: VisualizeContentProp
                     sizes="100vw"
                     className="rounded-md object-cover"
                   />
-       
                 </div>
               )}
               <p className="py-3 text-sm text-gray-300">Status: {prediction.status}</p>
@@ -202,16 +184,14 @@ export default function VisualizeContent({ initialPrompt }: VisualizeContentProp
               <Download className="mr-2 h-4 w-4" />
               Download
             </Button>
-        
-<Button
-  onClick={handleInstagramShare}
-  variant="outline"
-  className="text-[#09fff0] border-[#09fff0] hover:bg-[#09fff0] hover:text-gray-900 rounded-[12px]"
->
-  <InstagramIcon className="mr-2 h-4 w-4" />
-  Share on Instagram
-</Button>
-
+            <Button
+              onClick={handleInstagramShare}
+              variant="outline"
+              className="text-[#09fff0] border-[#09fff0] hover:bg-[#09fff0] hover:text-gray-900 rounded-[12px]"
+            >
+              <Instagram className="mr-2 h-4 w-4" />
+              Share on Instagram
+            </Button>
             <Button 
               onClick={handleImageToText} 
               variant="outline" 
@@ -224,6 +204,5 @@ export default function VisualizeContent({ initialPrompt }: VisualizeContentProp
         )}
       </Card>
     </div>
-    </Suspense>
   )
 }
