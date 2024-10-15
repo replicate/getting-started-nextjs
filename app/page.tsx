@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label"
 import { FaGoogle } from 'react-icons/fa'
 import { useToast } from "@/hooks/use-toast"
 import { Image as ImageIcon, HelpCircle, PenTool, Shield, MessageCircle } from "lucide-react"
-import Header from '@/components/header'
 
 const pages = [
   {
@@ -131,7 +130,6 @@ export default function HomePage() {
 
   return (
     <>
-      <Header />
       {session ? (
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-4xl font-bold text-[#09fff0] mb-4">Welcome to Safe-AI</h1>
