@@ -205,7 +205,7 @@ export default function HomePage() {
                 className="text-[#E904E5] hover:text-[#D003D1]"
                 onClick={() => router.push('/signup')}
               >
-                Don't have an account? Sign up
+                Don&apos;'t have an account? Sign up
               </Button>
             </CardFooter>
           </Card>
