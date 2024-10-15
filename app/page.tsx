@@ -46,7 +46,7 @@ export default function Component() {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">TheTechMargin Safe-AI</h1><em> Explore, be curious, expand your thinking.</em>
+        <h1 className="text-3xl font-bold mb-8 text-center">TheTechMargin Safe-AI</h1><em className="text-1xl font-bold mb-8 text-center"> Explore, be curious, expand your thinking.</em>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pages.map((page, index) => (
             <Card key={index} className="flex flex-col bg-gray-800 border-gray-700">
