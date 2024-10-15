@@ -1,87 +1,46 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { z } from "zod"
-import bcrypt from "bcryptjs"
-import { sql } from "@vercel/postgres"
+import { NextResponse } from 'next/server'
+import { z } from 'zod'
+import bcrypt from 'bcryptjs'
+import { sql } from '@vercel/postgres'
 
-const loginSchema = z.object({
+const signupSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters long"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
 })
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" }
-      },
-      async authorize(credentials) {
-        if (!credentials) {
-          throw new Error("No credentials provided")
-        }
+export async function POST(request: Request) {
+  try {
+    const body = await request.json()
+    const { name, email, password } = signupSchema.parse(body)
 
-        try {
-          const validatedCredentials = loginSchema.parse(credentials)
+    // Check if user already exists
+    const existingUser = await sql`
+      SELECT * FROM users WHERE email = ${email}
+    `
 
-          const result = await sql`
-            SELECT * FROM users WHERE email = ${validatedCredentials.email}
-          `
-          const user = result.rows[0]
+    if (existingUser.rows.length > 0) {
+      return NextResponse.json({ error: 'User already exists' }, { status: 400 })
+    }
 
-          if (!user || !user.password) {
-            throw new Error("Invalid credentials")
-          }
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-          const isPasswordValid = await bcrypt.compare(validatedCredentials.password, user.password)
+    // Insert the new user
+    const result = await sql`
+      INSERT INTO users (name, email, password)
+      VALUES (${name}, ${email}, ${hashedPassword})
+      RETURNING id, name, email
+    `
 
-          if (!isPasswordValid) {
-            throw new Error("Invalid credentials")
-          }
+    const newUser = result.rows[0]
 
-          return { id: user.id, email: user.email, name: user.name }
-        } catch (error) {
-          if (error instanceof z.ZodError) {
-            throw new Error(error.errors[0].message)
-          }
-          throw error
-        }
-      }
-    })
-  ],
-  pages: {
-    signIn: '/login',
-  },
-  callbacks: {
-    async jwt({ token, account, user }) {
-      if (account && user) {
-        return {
-          ...token,
-          accessToken: account.access_token,
-          refreshToken: account.refresh_token,
-          username: account.providerAccountId,
-        }
-      }
-      return token
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.accessToken = token.accessToken as string
-        session.user.refreshToken = token.refreshToken as string
-        session.user.username = token.username as string
-      }
-      return session
-    },
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+    return NextResponse.json({ user: newUser }, { status: 201 })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.errors }, { status: 400 })
+    }
+    console.error('Signup error:', error)
+    return NextResponse.json({ error: 'An error occurred during signup' }, { status: 500 })
+  }
 }
-
-const handler = NextAuth(authOptions)
-
-export { handler as GET, handler as POST }
