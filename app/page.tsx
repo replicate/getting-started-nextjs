@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { FaGoogle } from 'react-icons/fa'
 import { useToast } from "@/hooks/use-toast"
 import { Image as ImageIcon, HelpCircle, PenTool, Shield, MessageCircle } from "lucide-react"
-import Header from "@/components/header"
+import Header from '@/components/Header'
 
 const pages = [
   {
@@ -55,13 +55,43 @@ const pages = [
 export default function HomePage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
   const { data: session, status } = useSession()
 
+  const validateForm = () => {
+    let isValid = true
+    const newErrors = { email: '', password: '' }
+
+    if (!email) {
+      newErrors.email = 'Email is required'
+      isValid = false
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Email is invalid'
+      isValid = false
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required'
+      isValid = false
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters'
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+
     setIsLoading(true)
 
     try {
@@ -167,6 +197,7 @@ export default function HomePage() {
                     required
                     className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
                   />
+                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-white">Password</Label>
@@ -179,6 +210,7 @@ export default function HomePage() {
                     required
                     className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
                   />
+                  {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
                 <Button
                   type="submit"

@@ -1,9 +1,20 @@
-import NextAuth, { NextAuthOptions, Session, User } from "next-auth"
-import { JWT } from "next-auth/jwt"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { z } from "zod"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaClient } from "@prisma/client"
+import bcrypt from "bcryptjs"
+
+const prisma = new PrismaClient()
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+})
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -16,12 +27,34 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // Add your own logic here to validate the credentials
-        // This is just a placeholder example
-        if (credentials?.email === "user@example.com" && credentials?.password === "password") {
-          return { id: "1", name: "User", email: "user@example.com" }
+        if (!credentials) {
+          throw new Error("No credentials provided")
         }
-        return null
+
+        try {
+          const validatedCredentials = loginSchema.parse(credentials)
+
+          const user = await prisma.user.findUnique({
+            where: { email: validatedCredentials.email },
+          })
+
+          if (!user || !user.password) {
+            throw new Error("Invalid credentials")
+          }
+
+          const isPasswordValid = await bcrypt.compare(validatedCredentials.password, user.password)
+
+          if (!isPasswordValid) {
+            throw new Error("Invalid credentials")
+          }
+
+          return { id: user.id, email: user.email, name: user.name }
+        } catch (error) {
+          if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+          }
+          throw error
+        }
       }
     })
   ],
@@ -29,36 +62,27 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, account, user }: { token: JWT, account: any, user: User }) {
-      // Initial sign in
+    async jwt({ token, account, user }) {
       if (account && user) {
         return {
           ...token,
           accessToken: account.access_token,
           refreshToken: account.refresh_token,
           username: account.providerAccountId,
-          accessTokenExpires: account.expires_at ? account.expires_at * 1000 : 0,
         }
       }
-
-      // Return previous token if the access token has not expired yet
-      if (Date.now() < (token.accessTokenExpires as number)) {
-        return token
-      }
-
-      // Access token has expired, try to update it
       return token
     },
-    async session({ session, token }: { session: Session, token: JWT }) {
+    async session({ session, token }) {
       if (session.user) {
         session.user.accessToken = token.accessToken as string
         session.user.refreshToken = token.refreshToken as string
         session.user.username = token.username as string
       }
-
       return session
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 }
 
 const handler = NextAuth(authOptions)
