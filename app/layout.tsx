@@ -20,6 +20,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
               <title>Safe AI by TheTechMargin</title>
         <link rel="icon" href="/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
       <body className={`${inter.className} bg-background text-foreground`}>
       <div className="flex flex-col min-h-screen">
            <Header />

@@ -36,6 +36,7 @@ const poppins = Poppins({
 })
 
 const formSchema = z.object({
+  promptType: z.enum(["business", "personal"]),
   persona: z.object({
     role: z.string(),
     age: z.string(),
@@ -50,6 +51,9 @@ const formSchema = z.object({
   context: z.string().min(10, {
     message: "Context must be at least 10 characters.",
   }),
+  socialPlatforms: z.array(z.string()).optional(),
+  businessOptions: z.array(z.string()).optional(),
+  lifeOptions: z.array(z.string()).optional(),
 })
 
 export default function PromptCreationForm() {
@@ -65,6 +69,7 @@ export default function PromptCreationForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      promptType: "business",
       persona: {
         role: "",
         age: "",
@@ -77,11 +82,39 @@ export default function PromptCreationForm() {
         length: "",
       },
       context: "",
+      socialPlatforms: [],
+      businessOptions: [],
+      lifeOptions: [],
     },
   })
 
+  const watchPromptType = form.watch("promptType")
+
+  const socialPlatforms = [
+    "Facebook", "Twitter", "Instagram", "LinkedIn", "TikTok", "YouTube", "Pinterest", "Reddit"
+  ]
+
+  const businessOptions = [
+    "Marketing", "Sales", "Customer Service", "Product Development", "Finance", "Human Resources", "Operations", "Strategy"
+  ]
+
+  const lifeOptions = [
+    "Health & Wellness", "Personal Finance", "Relationships", "Career Development", "Education", "Hobbies", "Travel", "Personal Growth"
+  ]
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const prompt = `As a ${values.persona.age} year old ${values.persona.gender} ${values.persona.role} with expertise in ${values.persona.expertise}, create a ${values.output.length} ${values.output.format} in a ${values.output.tone} tone about: ${values.context}`
+    let prompt = `As a ${values.persona.age} year old ${values.persona.gender} ${values.persona.role} with expertise in ${values.persona.expertise}, create a ${values.output.length} ${values.output.format} in a ${values.output.tone} tone about: ${values.context}`
+
+    if (values.promptType === "business") {
+      prompt += `\nBusiness focus: ${values.businessOptions?.join(", ")}`
+    } else {
+      prompt += `\nPersonal life focus: ${values.lifeOptions?.join(", ")}`
+    }
+
+    if (values.socialPlatforms && values.socialPlatforms.length > 0) {
+      prompt += `\nOptimize for these social platforms: ${values.socialPlatforms.join(", ")}`
+    }
+
     setGeneratedPrompt(prompt)
     console.log(prompt)
   }
@@ -135,7 +168,7 @@ export default function PromptCreationForm() {
       <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 shadow-lg">
         <CardHeader className={`${poppins.className} text-center`}>
           <CardTitle className="text-3xl font-bold text-[#09fff0]">AI Prompt Creator</CardTitle>
-          <CardDescription className="text-lg text-gray-400">Create your perfect AI prompt in 3 easy steps.</CardDescription>
+          <CardDescription className="text-lg text-gray-400">Create your perfect AI prompt in 4 easy steps.</CardDescription>
         </CardHeader>
         <CardContent className="p-6">
           <Form {...form}>
@@ -151,7 +184,33 @@ export default function PromptCreationForm() {
                 >
                   {step === 1 && (
                     <div className="space-y-4">
-                      <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step 1: Who are you asking as?</h2>
+                      <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 1: Choose your prompt type</h2>
+                      <FormField
+                        control={form.control}
+                        name="promptType"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-200">Prompt Type</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="bg-gray-700 text-gray-200">
+                                  <SelectValue placeholder="Select a prompt type" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className="bg-gray-700 text-gray-200">
+                                <SelectItem value="business">Business</SelectItem>
+                                <SelectItem value="personal">Personal</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+                  {step === 2 && (
+                    <div className="space-y-4">
+                      <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 2: Who are you asking as?</h2>
                       <FormField
                         control={form.control}
                         name="persona.role"
@@ -167,8 +226,9 @@ export default function PromptCreationForm() {
                               <SelectContent className="bg-gray-700 text-gray-200">
                                 <SelectItem value="student">Student</SelectItem>
                                 <SelectItem value="professional">Professional</SelectItem>
-                                <SelectItem value="researcher">Researcher</SelectItem>
-                                <SelectItem value="educator">Educator</SelectItem>
+                                <SelectItem value="entrepreneur">Entrepreneur</SelectItem>
+                                <SelectItem value="manager">Manager</SelectItem>
+                                <SelectItem value="executive">Executive</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage className="text-red-400" />
@@ -191,7 +251,8 @@ export default function PromptCreationForm() {
                                 <SelectItem value="18-24">18-24</SelectItem>
                                 <SelectItem value="25-34">25-34</SelectItem>
                                 <SelectItem value="35-44">35-44</SelectItem>
-                                <SelectItem value="45+">45+</SelectItem>
+                                <SelectItem value="45-54">45-54</SelectItem>
+                                <SelectItem value="55+">55+</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage className="text-red-400" />
@@ -235,9 +296,11 @@ export default function PromptCreationForm() {
                               </FormControl>
                               <SelectContent className="bg-gray-700 text-gray-200">
                                 <SelectItem value="technology">Technology</SelectItem>
-                                <SelectItem value="science">Science</SelectItem>
-                                <SelectItem value="arts">Arts</SelectItem>
-                                <SelectItem value="business">Business</SelectItem>
+                                <SelectItem value="finance">Finance</SelectItem>
+                                <SelectItem value="marketing">Marketing</SelectItem>
+                                <SelectItem value="healthcare">Healthcare</SelectItem>
+                                <SelectItem value="education">Education</SelectItem>
+                                <SelectItem value="creative">Creative Arts</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage className="text-red-400" />
@@ -246,9 +309,9 @@ export default function PromptCreationForm() {
                       />
                     </div>
                   )}
-                  {step === 2 && (
+                  {step === 3 && (
                     <div className="space-y-4">
-                      <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step 2: What kind of output do you want?</h2>
+                      <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 3: What kind of output do you want?</h2>
                       <FormField
                         control={form.control}
                         name="output.format"
@@ -262,10 +325,12 @@ export default function PromptCreationForm() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="bg-gray-700 text-gray-200">
-                                <SelectItem value="essay">Essay</SelectItem>
+                                <SelectItem value="article">Article</SelectItem>
                                 <SelectItem value="report">Report</SelectItem>
                                 <SelectItem value="presentation">Presentation</SelectItem>
-                                <SelectItem value="blog-post">Blog Post</SelectItem>
+                                <SelectItem value="social-post">Social Media Post</SelectItem>
+                                <SelectItem value="email">Email</SelectItem>
+                                <SelectItem value="script">Script</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage className="text-red-400" />
@@ -286,9 +351,11 @@ export default function PromptCreationForm() {
                               </FormControl>
                               <SelectContent className="bg-gray-700 text-gray-200">
                                 <SelectItem value="formal">Formal</SelectItem>
-                                <SelectItem value="casual">Casual</SelectItem>
+                                <SelectItem  value="casual">Casual</SelectItem>
                                 <SelectItem value="humorous">Humorous</SelectItem>
-                                <SelectItem value="serious">Serious</SelectItem>
+                                <SelectItem value="inspirational">Inspirational</SelectItem>
+                                <SelectItem value="authoritative">Authoritative</SelectItem>
+                                <SelectItem value="empathetic">Empathetic</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage className="text-red-400" />
@@ -318,11 +385,126 @@ export default function PromptCreationForm() {
                           </FormItem>
                         )}
                       />
+                      <FormField
+                        control={form.control}
+                        name="socialPlatforms"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-200">Social Platforms (Optional)</FormLabel>
+                            <FormControl>
+                              <Select
+                                onValueChange={(value) => field.onChange([...field.value || [], value])}
+                                value={field.value?.length ? field.value[field.value.length - 1] : undefined}
+                              >
+                                <SelectTrigger className="bg-gray-700 text-gray-200">
+                                  <SelectValue placeholder="Select social platforms" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-gray-700 text-gray-200">
+                                  {socialPlatforms.map((platform) => (
+                                    <SelectItem key={platform} value={platform}>{platform}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {field.value?.map((platform) => (
+                                <Button
+                                  key={platform}
+                                  variant="secondary"
+                                  size="sm"
+                                  onClick={() => field.onChange(field.value?.filter((p) => p !== platform))}
+                                >
+                                  {platform} ✕
+                                </Button>
+                              ))}
+                            </div>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                   )}
-                  {step === 3 && (
+                  {step === 4 && (
                     <div className="space-y-4">
-                      <h2 className="text-2xl font-semibold mb-4 text-[#09fff0]">Step 3: Provide context for your prompt</h2>
+                      <h2 className="text-2xl font-semibold mb-4 text-[#E904E5]">Step 4: Provide context for your prompt</h2>
+                      {watchPromptType === "business" && (
+                        <FormField
+                          control={form.control}
+                          name="businessOptions"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-200">Business Focus Areas</FormLabel>
+                              <FormControl>
+                                <Select
+                                  onValueChange={(value) => field.onChange([...field.value || [], value])}
+                                  value={field.value?.length ? field.value[field.value.length - 1] : undefined}
+                                >
+                                  <SelectTrigger className="bg-gray-700 text-gray-200">
+                                    <SelectValue placeholder="Select business areas" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-gray-700 text-gray-200">
+                                    {businessOptions.map((option) => (
+                                      <SelectItem key={option} value={option}>{option}</SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {field.value?.map((option) => (
+                                  <Button
+                                    key={option}
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() => field.onChange(field.value?.filter((o) => o !== option))}
+                                  >
+                                    {option} ✕
+                                  </Button>
+                                ))}
+                              </div>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                      )}
+                      {watchPromptType === "personal" && (
+                        <FormField
+                          control={form.control}
+                          name="lifeOptions"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-200">Life Focus Areas</FormLabel>
+                              <FormControl>
+                                <Select
+                                  onValueChange={(value) => field.onChange([...field.value || [], value])}
+                                  value={field.value?.length ? field.value[field.value.length - 1] : undefined}
+                                >
+                                  <SelectTrigger className="bg-gray-700 text-gray-200">
+                                    <SelectValue placeholder="Select life areas" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-gray-700 text-gray-200">
+                                    {lifeOptions.map((option) => (
+                                      <SelectItem key={option} value={option}>{option}</SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {field.value?.map((option) => (
+                                  <Button
+                                    key={option}
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() => field.onChange(field.value?.filter((o) => o !== option))}
+                                  >
+                                    {option} ✕
+                                  </Button>
+                                ))}
+                              </div>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                      )}
                       <FormField
                         control={form.control}
                         name="context"
@@ -354,7 +536,7 @@ export default function PromptCreationForm() {
                   transition={{ duration: 0.5 }}
                   className="mt-8 p-4 bg-gray-700 rounded-lg shadow-inner"
                 >
-                  <h2 className="text-xl font-semibold mb-2  text-[#09fff0]">Generated Prompt:</h2>
+                  <h2 className="text-xl font-semibold mb-2 text-[#09fff0]">Generated Prompt:</h2>
                   <p className="p-2 bg-gray-600 rounded text-gray-200">{generatedPrompt}</p>
                   <div className="mt-4 flex space-x-2">
                     <Button onClick={handleDownload} variant="outline" className="bg-gray-600 text-gray-200 hover:bg-gray-500">
@@ -389,7 +571,7 @@ export default function PromptCreationForm() {
               Previous
             </Button>
           )}
-          {step < 3 ? (
+          {step < 4 ? (
             <Button onClick={() => setStep(step + 1)} className="bg-[#09fff0] text-gray-900 hover:bg-[#09fff0]/90">
               Next
               <ChevronRight className="ml-2 h-4 w-4" />
