@@ -10,15 +10,16 @@ import { Download, Instagram, FileText, Loader2, Sparkles } from "lucide-react";
 import { Suspense } from 'react';
 import { InstagramIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { GetServerSidePropsContext } from 'next'
 
 interface Prediction {
-  id: string
-  status: string
-  output: string[]
-  detail: string
+  id: string;
+  status: string;
+  output: string[];
+  detail: string;
 }
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const BackgroundPattern = () => (
   <svg className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]" aria-hidden="true">
@@ -29,23 +30,32 @@ const BackgroundPattern = () => (
     </defs>
     <rect width="100%" height="100%" strokeWidth="0" fill="url(#pattern-1)" />
   </svg>
-)
+);
 
-export default function VisualizeContent() {
-  const router = useRouter()
-  const [prediction, setPrediction] = useState<Prediction | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [prompt, setPrompt] = useState("")
-  const promptInputRef = useRef<HTMLInputElement>(null)
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { prompt } = context.query;
+  return {
+    props: {
+      initialPrompt: prompt ? decodeURIComponent(prompt as string) : "",
+    },
+  };
+}
+
+interface VisualizeContentProps {
+  initialPrompt: string;
+}
+
+export default function VisualizeContent({ initialPrompt }: VisualizeContentProps) {
+  const router = useRouter();
+  const [prediction, setPrediction] = useState<Prediction | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [prompt, setPrompt] = useState(initialPrompt);
+  const promptInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const urlPrompt = router.query.prompt;
-    if (urlPrompt) {
-      setPrompt(decodeURIComponent(urlPrompt as string));
-    }
     promptInputRef.current?.focus();
-  }, [router.query]);
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
    
