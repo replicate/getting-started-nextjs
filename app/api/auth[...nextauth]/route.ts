@@ -1,4 +1,5 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import NextAuth, { NextAuthOptions, Session, User } from "next-auth"
+import { JWT } from "next-auth/jwt"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 
@@ -28,7 +29,7 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, account, user }) {
+    async jwt({ token, account, user }: { token: JWT, account: any, user: User }) {
       // Initial sign in
       if (account && user) {
         return {
@@ -48,10 +49,12 @@ export const authOptions: NextAuthOptions = {
       // Access token has expired, try to update it
       return token
     },
-    async session({ session, token }) {
-      session.user.accessToken = token.accessTokens
-      session.user.refreshToken = token.refreshToken
-      session.user.username = token.username
+    async session({ session, token }: { session: Session, token: JWT }) {
+      if (session.user) {
+        session.user.accessToken = token.accessToken as string
+        session.user.refreshToken = token.refreshToken as string
+        session.user.username = token.username as string
+      }
 
       return session
     },
