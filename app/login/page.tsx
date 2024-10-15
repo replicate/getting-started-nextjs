@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,13 +14,42 @@ import { useToast } from "@/hooks/use-toast"
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
-  const { data: session, status } = useSession()
+
+  const validateForm = () => {
+    let isValid = true
+    const newErrors = { email: '', password: '' }
+
+    if (!email) {
+      newErrors.email = 'Email is required'
+      isValid = false
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Email is invalid'
+      isValid = false
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required'
+      isValid = false
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters'
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+
     setIsLoading(true)
 
     try {
@@ -54,15 +83,6 @@ export default function LoginPage() {
     signIn('google', { callbackUrl: '/' })
   }
 
-  if (status === "loading") {
-    return <div>Loading...</div>
-  }
-
-  if (session) {
-    router.push('/')
-    return null
-  }
-
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 font-sans">
       <Card className="w-full max-w-md bg-gray-800 border-gray-700">
@@ -92,6 +112,7 @@ export default function LoginPage() {
                 required
                 className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
               />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-white">Password</Label>
@@ -104,6 +125,7 @@ export default function LoginPage() {
                 required
                 className="bg-gray-700 text-white border-gray-600 focus:border-[#09fff0] focus:ring-[#09fff0]"
               />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             </div>
             <Button
               type="submit"

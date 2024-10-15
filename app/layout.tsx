@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import ClientLayout from './ClientLayout'
+import { SessionProvider } from 'next-auth/react'
+import Header from '@/components/header'
 import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -26,7 +27,14 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className={`${inter.className} bg-background text-foreground`}>
-        <ClientLayout>{children}</ClientLayout>
+        <SessionProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">
+              {children}
+            </main>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   )
