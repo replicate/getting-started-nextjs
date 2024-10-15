@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { Brain, ChevronLeft, ChevronRight, Send, Wand2 } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Brain, ChevronLeft, ChevronRight, Send, Bot } from "lucide-react"
 import { Poppins } from 'next/font/google'
+import { useToast } from "@/hooks/use-toast"
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -54,6 +56,7 @@ export default function Component() {
   const [selectedColorTheme, setSelectedColorTheme] = useState<string>("vibrant")
   const [isGeneratingAIPrompt, setIsGeneratingAIPrompt] = useState(false)
   const router = useRouter()
+  const { toast } = useToast()
 
   const instructions = [
     {
@@ -99,7 +102,9 @@ export default function Component() {
   }
 
   const handleNext = () => {
-    setCurrentStep((prev) => (prev < instructions.length - 1 ? prev + 1 : prev))
+    if (validateInput()) {
+      setCurrentStep((prev) => (prev < instructions.length - 1 ? prev + 1 : prev))
+    }
   }
 
   const handleNoteChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,7 +113,21 @@ export default function Component() {
     setNotes(newNotes)
   }
 
+  const validateInput = () => {
+    if (notes[currentStep].trim().length < 10) {
+      toast({
+        title: "Input too short",
+        description: "Please provide more details (at least 10 characters).",
+        variant: "destructive",
+      })
+      return false
+    }
+    return true
+  }
+
   const generatePrompt = () => {
+    if (!validateInput()) return
+
     const [character, attributes, scene, details] = notes.map(note => note.trim())
     const formattedPrompt = `
       A highly detailed, ${selectedStyle} image of an ideal ${character}.
@@ -125,6 +144,8 @@ export default function Component() {
   }
 
   const generateAIPrompt = async () => {
+    if (!validateInput()) return
+
     setIsGeneratingAIPrompt(true)
     try {
       const response = await fetch('/api/generate-ai-prompt', {
@@ -139,9 +160,17 @@ export default function Component() {
       }
       const data = await response.json()
       setFormattedPrompt(data.prompt)
+      toast({
+        title: "AI Prompt Generated",
+        description: "Your AI-enhanced prompt is ready!",
+      })
     } catch (error) {
       console.error('Error generating AI prompt:', error)
-      // Handle error (e.g., show an error message to the user)
+      toast({
+        title: "Error",
+        description: "Failed to generate AI prompt. Please try again.",
+        variant: "destructive",
+      })
     } finally {
       setIsGeneratingAIPrompt(false)
     }
@@ -153,12 +182,12 @@ export default function Component() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 p-4 font-sans">
+    <div className="min-h-screen bg-gray-900 p-4 font-sans">
       <Card className="w-full max-w-4xl mx-auto bg-gray-800 border-gray-700 mb-4">
         <CardHeader className={poppins.className}>
           <div className="flex items-center gap-2">
             <Brain className="h-6 w-6 text-[#09fff0]" />
-            <CardTitle className="text-2xl font-bold text-[#9FCF10]">{instructions[currentStep].title}</CardTitle>
+            <CardTitle className="text-2xl font-bold text-[#09fff0]">{instructions[currentStep].title}</CardTitle>
           </div>
           <CardDescription className="text-gray-300">{instructions[currentStep].description}</CardDescription>
         </CardHeader>
@@ -175,30 +204,34 @@ export default function Component() {
               onChange={handleNoteChange}
               className="w-full bg-gray-700 text-white border-gray-600 pr-12"
             />
-            <div className="absolute right-2 bottom-2">
-              <Button
-                onClick={generateAIPrompt}
-                className="bg-[#E904E5] hover:bg-[#D003D1] text-white p-2 rounded-lg"
-                disabled={isGeneratingAIPrompt}
-              >
-                <Wand2 className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded p-2 whitespace-nowrap">
-              Generate AI-enhanced prompt based on your input
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={generateAIPrompt}
+                    className="absolute right-2 bottom-2 bg-[#E904E5] hover:bg-[#D003D1] text-white p-2 rounded-lg"
+                    disabled={isGeneratingAIPrompt}
+                  >
+                    <Bot className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Generate AI-enhanced prompt based on your input</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           {currentStep === instructions.length - 1 && (
             <div className="mt-4 space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="style" className="text-white">Select Style</Label>
                 <Select value={selectedStyle} onValueChange={setSelectedStyle}>
-                  <SelectTrigger id="style" className="w-full bg-gray-700 text-white border-gray-600">
+                  <SelectTrigger id="style" className="w-full bg-gray-700 text-white border-gray-600 focus:ring-[#09fff0] focus:border-[#09fff0]">
                     <SelectValue placeholder="Select style" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-gray-700 text-white border-gray-600">
                     {styleOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
+                      <SelectItem key={option.value} value={option.value} className="focus:bg-[#09fff0] focus:text-gray-900">
                         {option.label}
                       </SelectItem>
                     ))}
@@ -208,12 +241,12 @@ export default function Component() {
               <div className="space-y-2">
                 <Label htmlFor="color-theme" className="text-white">Select Color Theme</Label>
                 <Select value={selectedColorTheme} onValueChange={setSelectedColorTheme}>
-                  <SelectTrigger id="color-theme" className="w-full bg-gray-700 text-white border-gray-600">
+                  <SelectTrigger id="color-theme" className="w-full bg-gray-700 text-white border-gray-600 focus:ring-[#09fff0] focus:border-[#09fff0]">
                     <SelectValue placeholder="Select color theme" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-gray-700 text-white border-gray-600">
                     {colorThemes.map((theme) => (
-                      <SelectItem key={theme.value} value={theme.value}>
+                      <SelectItem key={theme.value} value={theme.value} className="focus:bg-[#09fff0] focus:text-gray-900">
                         {theme.label}
                       </SelectItem>
                     ))}
@@ -254,7 +287,7 @@ export default function Component() {
         </CardFooter>
       </Card>
       {formattedPrompt && (
-        <Card className="w-full max-w-md bg-gray-800 border-gray-700 mt-4">
+        <Card className="w-full max-w-md mx-auto bg-gray-800 border-gray-700 mt-4">
           <CardHeader>
             <CardTitle className="text-white">Generated Prompt</CardTitle>
           </CardHeader>
