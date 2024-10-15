@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { SessionProvider } from 'next-auth/react'
 import Header from "@/components/header"
 import { UserContentProvider } from './contexts/UserContentContext'
 import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
-
 
 export const metadata: Metadata = {
   title: 'TheTechMargin Safe-AI',
@@ -22,16 +22,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-              <title>Safe AI by TheTechMargin</title>
+      <head>
+        <title>Safe AI by TheTechMargin</title>
         <link rel="icon" href="/favicon.ico" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      </head>
       <body className={`${inter.className} bg-background text-foreground`}>
-      <div className="flex flex-col min-h-screen">
-           <Header />
-           <UserContentProvider>
-        {children}
-        </UserContentProvider>
-        </div>
+        <SessionProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <UserContentProvider>
+              {children}
+            </UserContentProvider>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   )

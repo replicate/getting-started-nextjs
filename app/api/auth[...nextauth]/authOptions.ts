@@ -36,13 +36,13 @@ export const authOptions: NextAuthOptions = {
           const user = result.rows[0]
 
           if (!user || !user.password) {
-            throw new Error("User not found or password not set")
+            throw new Error("Invalid email or password")
           }
 
           const isPasswordValid = await bcrypt.compare(validatedCredentials.password, user.password)
 
           if (!isPasswordValid) {
-            throw new Error("Invalid password")
+            throw new Error("Invalid email or password")
           }
 
           return { id: user.id, email: user.email, name: user.name }
@@ -66,6 +66,12 @@ export const authOptions: NextAuthOptions = {
         token.username = account.providerAccountId
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : 0
       }
+      // Check if access token has expired
+      if (token.accessTokenExpires && Date.now() > token.accessTokenExpires) {
+        // TODO: Implement token refresh logic here
+        // For now, we'll just return the existing token
+        return token
+      }
       return token
     },
     async session({ session, token }) {
@@ -78,4 +84,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
+  debug: process.env.NODE_ENV === "development",
 }
