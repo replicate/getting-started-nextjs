@@ -1,10 +1,9 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
-import { prisma } from "@/lib/prisma"
+import { sql } from "@vercel/postgres"
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -12,7 +11,6 @@ const loginSchema = z.object({
 })
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -32,9 +30,10 @@ export const authOptions: NextAuthOptions = {
         try {
           const validatedCredentials = loginSchema.parse(credentials)
 
-          const user = await prisma.user.findUnique({
-            where: { email: validatedCredentials.email },
-          })
+          const result = await sql`
+            SELECT * FROM users WHERE email = ${validatedCredentials.email}
+          `
+          const user = result.rows[0]
 
           if (!user || !user.password) {
             throw new Error("Invalid credentials")

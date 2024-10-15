@@ -1,10 +1,9 @@
 import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
-import { prisma } from "@/lib/prisma"
+import { sql } from "@vercel/postgres"
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -12,7 +11,6 @@ const loginSchema = z.object({
 })
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -32,24 +30,25 @@ export const authOptions: NextAuthOptions = {
         try {
           const validatedCredentials = loginSchema.parse(credentials)
 
-          const user = await prisma.user.findUnique({
-            where: { email: validatedCredentials.email },
-          })
+          const result = await sql`
+            SELECT * FROM users WHERE email = ${validatedCredentials.email}
+          `
+          const user = result.rows[0]
 
           if (!user || !user.password) {
-            throw new Error("Invalid credentials")
+            throw new Error("User not found or password not set")
           }
 
           const isPasswordValid = await bcrypt.compare(validatedCredentials.password, user.password)
 
           if (!isPasswordValid) {
-            throw new Error("Invalid credentials")
+            throw new Error("Invalid password")
           }
 
           return { id: user.id, email: user.email, name: user.name }
         } catch (error) {
           if (error instanceof z.ZodError) {
-            throw new Error(error.errors[0].message)
+            throw new Error(`Validation error: ${error.errors[0].message}`)
           }
           throw error
         }
@@ -62,12 +61,10 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account, user }) {
       if (account && user) {
-        return {
-          ...token,
-          accessToken: account.access_token,
-          refreshToken: account.refresh_token,
-          username: account.providerAccountId,
-        }
+        token.accessToken = account.access_token
+        token.refreshToken = account.refresh_token
+        token.username = account.providerAccountId
+        token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : 0
       }
       return token
     },
