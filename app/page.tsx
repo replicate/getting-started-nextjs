@@ -8,21 +8,21 @@ export default function Component() {
   const pages = [
     {
       title: "Create My Ideal Persona",
-      description: "Harness your intuition to create powerful AI-generated visuals.",
-      instructions: "Transform your unique vision into stunning imagery that speaks to your audience.",
+      description: "Harness your intuition to create powerful AI-generated visuals reflecting your ideal persona.",
+      instructions: "Let us guide you on a visualization journey to bring your ideal persona to life with AI.",
       icon: <Image className="w-6 h-6 text-[#9FCF10]" />,
-      href: "/visualize",
-    },
-    {
-      title: "Create Images",
-      description: "Unlock your potential as a leader in the AI-driven business landscape.",
-      instructions: "Embark on a journey of self-discovery and innovation, tailored to your leadership style.",
-      icon: <HelpCircle className="w-6 h-6 text-[#9FCF10]" />,
       href: "/guide",
     },
     {
+      title: "Create Images",
+      description: "Create anything your imagination can dream up.",
+      instructions: "Design your promopt and let the AI do the rest. You can share, download, or even use your generated image as a prompt for another AI model.",
+      icon: <HelpCircle className="w-6 h-6 text-[#9FCF10]" />,
+      href: "/visualize",
+    },
+    {
       title: "Build a Prompt",
-      description: "Craft AI prompts that resonate with your authentic voice and business goals.",
+      description: "Craft AI prompts that resonate with your authentic voice and business or personal goals.",
       instructions: "Learn to communicate effectively with AI, leveraging your natural strengths as a leader.",
       icon: <PenTool className="w-6 h-6 text-[#9FCF10]" />,
       href: "/build",
