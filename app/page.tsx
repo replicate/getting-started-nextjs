@@ -14,6 +14,7 @@ interface User {
   // Add other user properties as needed
 }
 
+
 async function getUserData(email: string): Promise<User | null> {
   try {
     const { rows } = await sql<User>`SELECT * FROM users WHERE email = ${email}`;

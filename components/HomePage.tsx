@@ -5,6 +5,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import { Image as ImageIcon, HelpCircle, PenTool, Shield, MessageCircle } from "lucide-react"
 
+  import { User } from '@/lib/types'
+
+  interface HomePageProps {
+    user: User;
+  }
+  
+ 
+
 const pages = [
   {
     title: "Create My Ideal Persona",
@@ -43,7 +51,7 @@ const pages = [
   },
 ]
 
-export default function HomePage() {
+export default function HomePage({ user }: HomePageProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-[#09fff0] mb-4">Welcome to Safe-AI</h1>
