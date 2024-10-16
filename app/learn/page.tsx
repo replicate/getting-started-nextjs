@@ -1,4 +1,3 @@
-"use client"
 
 import { Brain, Shield, Users, Database, Zap, Target, Book, Globe, Cog, Headphones } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"

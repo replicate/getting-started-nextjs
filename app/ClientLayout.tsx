@@ -1,5 +1,3 @@
-'use client'
-
 import { SessionProvider } from 'next-auth/react'
 import { UserContentProvider } from './contexts/UserContentContext'
 import Header from "@/components/header"
