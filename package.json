@@ -28,6 +28,7 @@
     "alert": "^6.0.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "card": "^2.5.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "eslint": "8.54.0",
