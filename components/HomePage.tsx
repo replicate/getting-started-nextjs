@@ -4,9 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Image as ImageIcon, HelpCircle, PenTool, Shield, MessageCircle } from "lucide-react"
-
-  import { User } from '@/lib/types'
-
+import { User } from "@/lib/types"
   interface HomePageProps {
     user: User;
   }
