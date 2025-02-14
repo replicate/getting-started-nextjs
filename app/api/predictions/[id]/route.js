@@ -11,8 +11,8 @@ replicate.fetch = (url, options) => {
   return fetch(url, { cache: "no-store", ...options });
 };
 
-export async function GET(request, {params}) {
-  const { id } = params;
+export async function GET(request, context) {
+  const { id } = await context.params;
   const prediction = await replicate.predictions.get(id);
 
   if (prediction?.error) {
