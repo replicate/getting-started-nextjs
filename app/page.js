@@ -36,7 +36,7 @@ export default function Home() {
       prediction.status !== "succeeded" &&
       prediction.status !== "failed"
     ) {
-      await sleep(1000);
+      await sleep(250);
       const response = await fetch(`/api/predictions/${prediction.id}`);
       prediction = await response.json();
       if (response.status !== 200) {
@@ -52,8 +52,8 @@ export default function Home() {
     <div className="container max-w-2xl mx-auto p-5">
       <h1 className="py-6 text-center font-bold text-2xl">
         Dream something with{" "}
-        <a href="https://replicate.com/stability-ai/sdxl?utm_source=project&utm_project=getting-started">
-          SDXL
+        <a href="https://replicate.com/black-forest-labs/flux-schnell?utm_source=project&utm_project=getting-started">
+          Flux Schnell
         </a>
       </h1>
 
